@@ -2,6 +2,7 @@
 <html lang="es"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Acompañante de Salud Activa</title>
+<link rel="manifest" href="manifest.webmanifest"><meta name="theme-color" content="#3498db"><link rel="icon" href="icon-192.png"><link rel="apple-touch-icon" href="icon-192.png">
 <style>
 :root{--bg:#f0f8ff;--tx:#2c3e50;--card:#fff;--card2:#fff3e0;--line:#bbb;--az:#3498db;--azs:#2980b9;--vd:#2ecc71;--vds:#27ae60;--na:#f39c12;--nas:#d35400;--ro:#e74c3c;--ros:#c0392b;--mo:#9b59b6;--mos:#8e44ad;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#121a22;--tx:#ecf0f1;--card:#1e2a36;--card2:#3a2e1c;--line:#556}}
@@ -80,24 +81,52 @@ body.hc{--bg:#000;--tx:#fff;--card:#000;--card2:#1a1a1a;--line:#fff}body.hc .btn
 .fb{max-height:92vh;overflow:auto;padding:20px}.big{font-size:3.5rem}.rs p{text-align:left;font-size:1.15rem;margin:5px 0}
 @media(max-width:360px){body{padding:8px 8px 100px}h1{font-size:1.4rem}.btn{font-size:1.2rem}.gm{gap:8px}.gm .btn{min-height:92px;font-size:1rem}.carta{font-size:1.8rem;min-height:60px;padding:10px 0}.pieza{font-size:1.8rem;min-height:64px;padding:12px 0}.cs{font-size:1.7rem;min-height:56px}.s9 .cs{font-size:1.1rem;min-height:30px}.stats .st b{font-size:1.2rem}.stats .st span{font-size:.85rem}#nav small{font-size:.7rem}}
 @media(min-width:700px){.screen{padding:28px}.gm{grid-template-columns:repeat(3,1fr)}.btn{font-size:1.5rem}p{font-size:1.25rem}h2{font-size:1.9rem}#nav{justify-content:center}#nav button{max-width:150px}}
+
+.md{background:var(--card2);border:3px solid var(--na);border-radius:15px;padding:12px;margin:12px 0;text-align:left}
+.dosis{border:2px solid var(--line);border-radius:12px;padding:10px;margin:8px 0;text-align:left;font-size:1.15rem}
+.dosis .r{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}.dosis .r button{flex:1;min-width:95px;font-size:1.1rem;padding:14px 6px;border-radius:10px;border:0;color:#fff;font-weight:bold;cursor:pointer}
+.sd{width:100%;max-width:420px;display:block;margin:6px auto}
+#salud h3,#salud .hl{text-align:left}#salud .mini{margin:3px}
+#rc2{width:150px;height:150px;border-radius:50%;background:var(--az);margin:30px auto;transition:transform 4s ease-in-out}
+body.simple #nav button:not([data-s=inicio]):not([data-s=salud]):not([data-s=ajustes]){display:none}
+body.simple .tip,body.simple .stats,body.simple #plan,body.simple #cont{display:none!important}
+body.simple .btn{font-size:2rem;padding:24px 16px;max-width:none}body.simple p{font-size:1.6rem}
+@media(prefers-reduced-motion:reduce){#rc2{transition:none}}
+
+.sem{display:flex;gap:6px;align-items:flex-end;height:150px;margin:10px 0}.sem div{flex:1;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:100%;font-size:1.1rem}
+.sem i{display:block;width:100%;max-width:38px;background:var(--vd);border-radius:6px 6px 0 0}.sem .hoy b,.sem .hoy small{color:var(--az);font-weight:bold}.sem .fut i{background:var(--line);opacity:.4}
+.ord{display:flex;align-items:center;gap:6px;text-align:left;font-size:1.15rem;margin:4px 0}.ord span{flex:1}
+#anim{margin:8px auto;width:150px}#anim svg line,#anim svg circle{stroke:var(--tx);stroke-width:7;stroke-linecap:round;fill:none}#anim svg circle{fill:var(--na);stroke:var(--nas);stroke-width:3}
+#anim *{animation-duration:1.2s;animation-iteration-count:infinite;animation-timing-function:ease-in-out}#anim.pausado *{animation-play-state:paused!important}
+#anim g{transform-box:view-box}
+.a-marcha #fli{transform-origin:60px 90px;animation-name:lv}.a-marcha #fld{transform-origin:60px 90px;animation-name:lv;animation-delay:.6s}
+.a-brazos #fbi{transform-origin:60px 52px;animation-name:bi}.a-brazos #fbd{transform-origin:60px 52px;animation-name:bd}
+.a-hombros #fbi,.a-hombros #fbd{transform-origin:60px 52px;animation-name:ho}.a-hombros #fbd{animation-delay:.6s}
+.a-cuello #fh{transform-origin:60px 42px;animation-name:cu}
+.a-lateral #fg{transform-origin:60px 130px;animation-name:la}
+.a-sube #fg{animation-name:su}
+.a-pierna #fld{transform-origin:60px 90px;animation-name:pi}
+@keyframes lv{50%{transform:rotate(-40deg)}}@keyframes bi{50%{transform:rotate(140deg)}}@keyframes bd{50%{transform:rotate(-140deg)}}@keyframes ho{50%{transform:rotate(35deg)}}
+@keyframes cu{25%{transform:rotate(-20deg)}75%{transform:rotate(20deg)}}@keyframes la{25%{transform:rotate(-10deg)}75%{transform:rotate(10deg)}}@keyframes su{50%{transform:translateY(-12px)}}@keyframes pi{50%{transform:rotate(-55deg)}}
+@media(prefers-reduced-motion:reduce){#anim *{animation:none!important}}
 </style></head><body>
 
 <div id="estado"></div>
 <div id="inicio" class="screen active">
 <h1>🌟 Acompañante de Salud 🌟</h1>
 <div class="stats"><div class="st"><b id="rc">🔥 0</b><span id="rt"></span></div><div class="st"><b id="pt">⭐ 0</b><span>puntos</span></div><div class="st"><b id="mt">☆☆</b><span id="ms"></span></div></div>
-<p id="hola" style="font-weight:bold"></p><div class="plan" id="plan"></div>
+<div class="md" id="midia" aria-live="polite"></div><p id="hola" style="font-weight:bold"></p><div class="plan" id="plan"></div>
 <button class="btn mo" onclick="ir('menu-mente')">🧠 Ejercitar la Mente</button>
 <button class="btn vd" onclick="ir('menu-cuerpo')">🏃‍♂️ Ejercitar el Cuerpo</button>
 <div id="cont" style="display:none"><p style="font-size:1.2rem;margin:20px 0 0">Tu última actividad fue: <b id="cl"></b></p><button class="btn" onclick="ACT[S.act][1]()">▶️ Continuar</button></div>
 <div class="tip" onclick="decir(TIPS[ti],1)"><span>💡 Tip de hoy (tocá para escucharlo)</span><p id="tip"></p></div>
 <div class="tip" style="cursor:default"><span>💧 Hábitos de hoy (seguimiento, no es un diagnóstico médico)</span>
-<p>Vasos de agua: <b id="ag">0</b> / 6 <button class="mini" onclick="agua(1)">+</button><button class="mini" onclick="agua(-1)">−</button></p><div id="hab"></div></div>
+<p>Vasos de agua: <b id="ag">0</b> / <span id="mg">6</span> <button class="mini" onclick="agua(1)">+</button><button class="mini" onclick="agua(-1)">−</button></p><div id="hab"></div></div>
 </div>
 
 <div id="menu-mente" class="screen">
 <h2>🧠 Juegos Mentales</h2>
-<p>Elegí una actividad:</p>
+<div class="md" id="desafio"></div><p>Elegí una actividad:</p>
 <div class="gm">
 <button class="btn na" onclick="iniQ('ref')">🗣️ Completar Refranes</button>
 <button class="btn" onclick="iniMem()">🃏 Memoria de Cartas</button>
@@ -125,7 +154,7 @@ body.hc{--bg:#000;--tx:#fff;--card:#000;--card2:#1a1a1a;--line:#fff}body.hc .btn
 <button class="btn na" onclick="verEj('apoyo')">🚶‍♂️ Con Apoyo (Medio)</button>
 <button class="btn ro" onclick="verEj('pie')">🧍 De Pie (Difícil)</button>
 <button class="btn mo" onclick="verEj('rut')">⭐ Mi rutina</button>
-<button class="btn" onclick="ir('creador')">🛠️ Crear rutina</button>
+<button class="btn" onclick="ir('creador')">🛠️ Crear rutina</button><button class="btn mo" onclick="ir('misrut')">📚 Mis rutinas</button>
 </div><p style="font-size:1rem">Si sentís dolor o mareo, pará y consultá a tu médico.</p>
 <button class="btn volver" onclick="ir('inicio')">⬅️ Volver al Inicio</button>
 </div>
@@ -186,18 +215,52 @@ body.hc{--bg:#000;--tx:#fff;--card:#000;--card2:#1a1a1a;--line:#fff}body.hc .btn
 <div class="aj"><button onclick="fuente(-1)">Letra A−</button><button onclick="fuente(1)">Letra A+</button><button id="b-snd" onclick="alt('snd')"></button><button id="b-voz" onclick="alt('voz')"></button><button id="b-tema" onclick="ajuste('tema')"></button><button id="b-hc" onclick="ajuste('hc')"></button><button id="b-xl" onclick="ajuste('xl')"></button></div>
 <p style="margin:25px 5px 5px">Copia de seguridad</p><textarea id="datos" rows="3" style="width:100%;font-size:1rem" placeholder="Acá aparece tu progreso exportado, o pegá uno para importar"></textarea>
 <div class="aj"><button onclick="exportar()">📤 Exportar</button><button onclick="importar()">📥 Importar</button><button id="b-rst" onclick="reiniciar()">🗑️ Reiniciar progreso</button></div>
+<h3 style="text-align:left">👨‍👩‍👧 Compartir con una persona de confianza</h3><p style="font-size:1.05rem;text-align:left">Es opcional. La app no envía nada sola: arma un resumen y vos decidís si compartirlo y con quién.</p>
+<input id="cu-n" class="sd" maxlength="30" placeholder="Nombre de la persona (opcional)" aria-label="Nombre de la persona de confianza" oninput="S.cu.n=this.value.trim();guardar()">
+<button class="chk" id="cu-a" onclick="cuid('a')"></button><button class="chk" id="cu-m" onclick="cuid('m')"></button><button class="chk" id="cu-t" onclick="cuid('t')"></button><button class="chk" id="cu-x" onclick="cuid('x')"></button>
+<button class="btn" onclick="resumen()">📤 Armar y compartir resumen</button>
+<p style="font-size:1.05rem;text-align:left">🔒 <b>Privacidad:</b> lo que cargás (medicamentos, turnos, progreso) se guarda solo en este dispositivo, dentro del navegador. No se envía a ningún servidor. Para borrarlo todo usá «Reiniciar progreso». La copia de seguridad es un texto que vos decidís dónde guardar.</p>
 <p style="font-size:1.1rem">⚠️ Aviso de salud: esta app propone ejercicio suave y seguimiento de hábitos. No es un diagnóstico y no reemplaza la consulta médica.</p></div>
 
-<div id="creador" class="screen"><h2>🛠️ Creador de rutinas</h2><p>Tocá los ejercicios en el orden que quieras (mínimo 3).</p><div id="cr-lista"></div>
+<div id="creador" class="screen"><h2>🛠️ Creador de rutinas</h2><p>Tocá los ejercicios que quieras (mínimo 3) y ordenalos con las flechas.</p><input id="cr-n" class="sd" maxlength="30" placeholder="Nombre de la rutina" aria-label="Nombre de la rutina"><div id="cr-lista"></div>
 <button class="btn vd" onclick="guardarRut()">💾 Guardar mi rutina</button><button class="btn volver" onclick="ir('menu-cuerpo')">⬅️ Volver</button></div>
 
 <div id="seguridad" class="screen"><h2>⚠️ Antes de comenzar</h2><p>Realizá los movimientos de forma suave.</p><p>Si aparece dolor, mareo, falta de aire u otro síntoma preocupante, detené la actividad y buscá orientación médica.</p>
 <button class="btn vd" onclick="segOk=1;verEj(pend)">✓ Entendido</button><button class="btn volver" onclick="ir('menu-cuerpo')">⬅️ Volver</button></div>
 
-<div id="guiada" class="screen"><h2 id="gt"></h2><h3 id="gn" style="font-size:2rem;margin:5px 0"></h3><p id="gd"></p><div class="tm" id="gc"></div><div class="barra"><i id="gb"></i></div>
-<button class="btn" onclick="gi++;pasoG()">Siguiente ⏭️</button><button class="btn volver" onclick="ir('menu-cuerpo')">⬅️ Salir</button></div>
+<div id="guiada" class="screen"><h2 id="gt"></h2><h3 id="gn" style="font-size:2rem;margin:5px 0"></h3><p id="gd"></p><div id="anim" class="a-marcha" aria-hidden="true"><svg viewBox="0 0 120 150" width="150" height="170"><g id="fg"><circle id="fh" cx="60" cy="26" r="13"/><line x1="60" y1="42" x2="60" y2="90"/><g id="fbi"><line x1="60" y1="52" x2="35" y2="80"/></g><g id="fbd"><line x1="60" y1="52" x2="85" y2="80"/></g><g id="fli"><line x1="60" y1="90" x2="45" y2="135"/></g><g id="fld"><line x1="60" y1="90" x2="75" y2="135"/></g></g></svg></div><div class="tm" id="gc"></div><div class="barra"><i id="gb"></i></div>
+<button class="btn na" id="g-p" onclick="togPausa()">⏸️ Pausar</button><button class="btn" onclick="gi++;pasoG()">Siguiente ⏭️</button><button class="btn volver" onclick="ir('menu-cuerpo')">⬅️ Salir</button></div>
 
-<nav id="nav"><button data-s="inicio" onclick="ir('inicio')">🏠<small>Inicio</small></button><button data-s="mente" onclick="ir('menu-mente')">🧠<small>Mente</small></button><button data-s="cuerpo" onclick="ir('menu-cuerpo')">🏃<small>Cuerpo</small></button><button data-s="progreso" onclick="ir('progreso')">📊<small>Progreso</small></button><button data-s="ajustes" onclick="ir('ajustes')">⚙️<small>Ajustes</small></button></nav>
+<div id="salud" class="screen"><h2>💊 Mi salud</h2>
+<div id="s-dosis"></div>
+<button class="btn" onclick="ir('resp')">🌬️ Respirar y relajarme</button>
+<h3>➕ Agregar medicamento</h3>
+<input id="m-n" class="sd" placeholder="Nombre del medicamento" maxlength="40" aria-label="Nombre del medicamento">
+<input id="m-d" class="sd" placeholder="Dosis indicada por tu profesional" maxlength="40" aria-label="Dosis">
+<input id="m-h" class="sd" placeholder="Horarios (ej: 08:00, 20:00)" maxlength="40" aria-label="Horarios">
+<p class="hl">Días de toma:</p><div id="m-dias"></div>
+<p class="hl">Desde / hasta (opcional):</p><input id="m-i" type="date" class="sd" aria-label="Fecha de inicio"><input id="m-f" type="date" class="sd" aria-label="Fecha de fin">
+<input id="m-s" type="number" min="0" class="sd" placeholder="Unidades que tenés (opcional)" aria-label="Unidades disponibles">
+<button class="btn vd" onclick="agregarMed()">💾 Guardar medicamento</button>
+<div id="s-meds"></div>
+<h3>📅 Turnos y estudios médicos</h3>
+<input id="c-t" class="sd" placeholder="Ej: Control con el médico" maxlength="50" aria-label="Turno">
+<input id="c-f" type="date" class="sd" aria-label="Fecha del turno"><input id="c-h" type="time" class="sd" aria-label="Hora del turno">
+<button class="btn vd" onclick="agregarCit()">💾 Guardar turno</button>
+<div id="s-cit"></div>
+<h3>📋 Últimos 7 días</h3><div id="s-hist"></div>
+<p class="hl">Es solo un registro tuyo. Seguí siempre las indicaciones de tu profesional de salud.</p>
+</div>
+<div id="resp" class="screen"><h2>🌬️ Respiración</h2><p>Una pausa de 1 minuto. Seguí el círculo.</p><div id="rc2"></div><p id="rt2" style="font-weight:bold;font-size:1.6rem"></p>
+<button class="btn vd" onclick="respirar()">▶️ Comenzar</button><button class="btn volver" onclick="ir('salud')">⬅️ Volver</button></div>
+<div id="habitos" class="screen"><h2>🌱 Mis hábitos</h2><p>Elegí los que quieras y fijá tu propia meta diaria. Ninguno es obligatorio.</p><div id="h-lista"></div>
+<h3 class="hl">Sumar un hábito</h3><div id="h-pre"></div>
+<input id="h-n" class="sd" maxlength="30" placeholder="Otro hábito (ej: regar las plantas)" aria-label="Nombre del hábito"><input id="h-m" type="number" min="1" max="20" value="1" class="sd" aria-label="Veces por día">
+<button class="btn vd" onclick="hAdd($('h-n').value,'🌱',$('h-m').value);$('h-n').value=''">➕ Agregar hábito</button>
+<h3 class="hl">💧 Meta de agua</h3><p>Vasos por día: <b id="h-ag"></b> <button class="mini" aria-label="Menos" onclick="maga(-1)">−</button><button class="mini" aria-label="Más" onclick="maga(1)">+</button></p>
+<button class="btn volver" onclick="ir('inicio')">⬅️ Volver</button></div>
+<div id="misrut" class="screen"><h2>📚 Mis rutinas</h2><div id="mr-l"></div><button class="btn vd" onclick="ir('creador')">🛠️ Crear rutina nueva</button><button class="btn volver" onclick="ir('menu-cuerpo')">⬅️ Volver</button></div>
+<nav id="nav"><button data-s="inicio" onclick="ir('inicio')">🏠<small>Inicio</small></button><button data-s="mente" onclick="ir('menu-mente')">🧠<small>Mente</small></button><button data-s="cuerpo" onclick="ir('menu-cuerpo')">🏃<small>Cuerpo</small></button><button data-s="salud" onclick="ir('salud')">💊<small>Salud</small></button><button data-s="progreso" onclick="ir('progreso')">📊<small>Progreso</small></button><button data-s="ajustes" onclick="ir('ajustes')">⚙️<small>Ajustes</small></button></nav>
 
 <div id="fiesta"><div id="conf"></div><div class="fb"><div class="big">⭐</div><h2 id="ft"></h2><div class="rs" id="fs2"></div><button class="btn vd" id="f-seg" onclick="cerrarF()">▶️ Seguir</button><button class="btn" onclick="otraVez()">🔁 Jugar de nuevo</button><button class="btn volver" onclick="volverM()">⬅️ Volver al menú</button></div></div>
 <div id="aviso"></div>
@@ -344,7 +407,7 @@ function pasoG(){const L=ejAct,D=+$('dur').value;
  ir('guiada');const e=L[gi],tk=simTok;let r=D;
  $('gt').textContent='Ejercicio '+(gi+1)+' de '+L.length;$('gn').textContent=e[0];$('gd').textContent=e[1];$('gc').textContent=fm(r);$('gb').style.width='0';
  decir((gi?'':'Comenzamos. ')+e[0]+'. '+e[1],1);
- tmr=setInterval(()=>{r--;$('gc').textContent=fm(r);$('gb').style.width=(D-r)*100/D+'%';
+ tmr=setInterval(()=>{if(pausaG)return;r--;$('gc').textContent=fm(r);$('gb').style.width=(D-r)*100/D+'%';
   if(r==10&&D>10)decir('Faltan 10 segundos',1);if(r<=5&&r>0)decir(String(r),1);
   if(r<=0){clearInterval(tmr);if(gi<L.length-1){sonar([660]);decir('Muy bien. Siguiente ejercicio.',1);setTimeout(()=>{if(tk==simTok){gi++;pasoG()}},2500)}else{gi++;pasoG()}}},1000)}
 
@@ -390,22 +453,22 @@ function pintarHab(){const h=fecha();if(S.agua.d!=h)S.agua={d:h,n:0};if(S.hab.d!
  $('ag').textContent=S.agua.n;$('hab').innerHTML=HB.map((t,i)=>`<button class="chk" onclick="hab(${i})">${S.hab.k[i]?'☑️':'⬜'} ${t}</button>`).join('')}
 function agua(d){pintarHab();S.agua.n=Math.max(0,Math.min(20,S.agua.n+d));guardar();pintarHab()}
 function hab(i){pintarHab();S.hab.k[i]^=1;guardar();pintarHab()}
-function pintarInicio(){const h=fecha(),n=S.dia==h?S.hoy:0,r=(S.rd==h||S.rd==fecha(-1))?S.racha:0,e=Math.min(n,2),a=ACT[S.act],pl=planHoy();
+function pintarInicio(){const h=fecha(),n=S.dia==h?S.hoy:0,r=(S.rd==h||S.rd==fecha(-1)||S.rd==fecha(-2))?S.racha:0,e=Math.min(n,2),a=ACT[S.act],pl=planHoy();
  $('hola').textContent='¡Hola'+(S.nombre?', '+S.nombre:'')+'! 👋 ¿Qué vamos a hacer hoy?';
  $('rc').textContent='🔥 '+r;$('rt').textContent=r==0?'¡Empezá hoy!':r==1?'día seguido':'días seguidos';$('pt').textContent='⭐ '+S.pts;
  $('mt').textContent='⭐'.repeat(e)+'☆'.repeat(2-e);$('ms').textContent=n>=2?'¡Meta cumplida!':n+' de 2 hoy';
  $('plan').innerHTML='<b style="font-size:1.4rem">🎯 Tu plan de hoy</b>'+pl.map(k=>'<p class="pi" onclick="irPlan(\''+k+'\')" style="cursor:pointer">'+(okP(k)?'✅':'⬜')+' '+ACT[k][0]+(DIF[k]?' · '+['Fácil','Difícil','Experto'][nivelDe(k)]:'')+'</p>').join('')+'<p class="pi">Progreso: '+pl.filter(okP).length+'/'+pl.length+'</p><button class="btn vd" onclick="comenzarPlan()">▶️ Comenzar mi plan</button>';iconos($('plan'));
  $('cont').style.display=a?'block':'none';
  if(a)$('cl').textContent=a[0]+' ('+(S.af==h?'hoy':S.af==fecha(-1)?'ayer':'hace unos días')+')';pintarHab()}
-function pintarProg(){const d=new Date(),y=d.getFullYear(),mo=d.getMonth(),wi=(d.getDay()+6)%7,h=fecha(),r=(S.rd==h||S.rd==fecha(-1))?S.racha:0,
+function pintarProg(){const d=new Date(),y=d.getFullYear(),mo=d.getMonth(),wi=(d.getDay()+6)%7,h=fecha(),r=(S.rd==h||S.rd==fecha(-1)||S.rd==fecha(-2))?S.racha:0,
  sem=[0,1,2,3,4,5,6].map(i=>S.dias[fecha(i-wi)]||0),V=Object.values(S.dias),act=V.filter(v=>v>0).length,meta=V.filter(v=>v>=2).length,
  mes=Object.keys(S.dias).filter(k=>k.startsWith(y+'-'+(mo+1)+'-')).reduce((a,k)=>a+S.dias[k],0),
- T=[['🔥','Racha actual',r+' días'],['🏆','Mejor racha',S.mejor+' días'],['🧠','Juegos mentales',S.nm],['🏃','Ejercicios',S.ne],['⏱️','Tiempo total',Math.round(S.min)+' min'],['⭐','Puntos',S.pts],['📅','Esta semana',sem.reduce((a,b)=>a+b)],['🗓️','Este mes',mes],['🎯','Metas cumplidas',(act?Math.round(meta*100/act):0)+'%']],
+ T=[['🔥','Racha actual',r+' days'],['🏆','Mejor racha',S.mejor+' days'],['🧠','Juegos mentales',S.nm],['🏃','Ejercicios',S.ne],['⏱️','Tiempo total',Math.round(S.min)+' min'],['⭐','Puntos',S.pts],['📅','Esta semana',sem.reduce((a,b)=>a+b)],['🗓️','Este mes',mes],['🎯','Metas cumplidas',(act?Math.round(meta*100/act):0)+'%']],
  n=new Date(y,mo+1,0).getDate(),f=(new Date(y,mo,1).getDay()+6)%7;
- let c='LMXJVSD'.split('').map(x=>'<b>'+x+'</b>').join('')+'<i></i>'.repeat(f);
+ let c=DSC.map(x=>'<b>'+x+'</b>').join('')+'<i></i>'.repeat(f);
  for(let i=1;i<=n;i++){const v=S.dias[y+'-'+(mo+1)+'-'+i]||0;c+='<span>'+(v>=2?'🟢':v?'🟡':'⚪')+'<small>'+i+'</small></span>'}
  $('pg').innerHTML='<div class="gp">'+T.map(t=>'<div class="st"><b>'+t[0]+' '+t[2]+'</b><span>'+t[1]+'</span></div>').join('')+'</div>'
- +'<h3>📅 Esta semana</h3>'+sem.map((v,i)=>'<p class="hl">'+'LMXJVSD'[i]+' '+'█'.repeat(Math.min(v,12))+' '+v+'</p>').join('')
+ +'<h3>📅 Esta semana</h3>'+sem.map((v,i)=>'<p class="hl">'+DSC[i]+' '+'█'.repeat(Math.min(v,12))+' '+v+'</p>').join('')
  +'<h3>🗓️ '+d.toLocaleDateString('es-AR',{month:'long',year:'numeric'})+'</h3><div class="cal">'+c+'</div><p class="hl">🟢 meta cumplida · 🟡 algo de actividad · ⚪ sin actividad</p>'
  +'<h3>🏆 Logros</h3>'+LG.map(l=>'<div class="lg'+(S.lg[l[0]]?'':' no')+'"><span>'+l[1]+'</span><div><b>'+(S.lg[l[0]]?'✅ ':'🔒 ')+l[2]+'</b><br>'+l[3]+'</div></div>').join('')
  +'<h3>📋 Historial</h3>'+(S.hist.length?S.hist.slice(-12).reverse().map(x=>'<p class="hl">'+(x.f==h?'Hoy':x.f==fecha(-1)?'Ayer':x.f.split('-').reverse().slice(0,2).join('/'))+' · '+(ACT[x.a]?ACT[x.a][0]:x.a)+' · '+(x.m||'&lt;1')+' min</p>').join(''):'<p class="hl">Todavía no hay actividades. ¡Empezá hoy!</p>')}
@@ -448,12 +511,6 @@ const SEC={inicio:'inicio','menu-mente':'mente',quiz:'mente',memoria:'mente',rom
 function navAct(id){document.querySelectorAll('#nav button').forEach(b=>{const on=b.dataset.s==SEC[id];b.classList.toggle('on',on);if(on)b.setAttribute('aria-current','page');else b.removeAttribute('aria-current')});
  const e=$('estado'),a=ACT[S.act];e.style.display=ACTV.includes(id)&&a?'block':'none';if(a)e.textContent='● En curso: '+a[0];
  if(id=='menu-mente'||id=='menu-cuerpo')estados();if(id=='creador'){sel=[...S.rut];pintarCr()}}
-function estados(){const h=fecha();document.querySelectorAll('.gm .btn').forEach(b=>{
- const m=(b.getAttribute('onclick')||'').match(/iniQ\('(\w+)'\)|ini(Mem|RC|Su|Si)\(\)|verEj\('(\w+)'\)/);if(!m)return;
- const k=m[1]||({Mem:'mem',RC:'rc',Su:'su',Si:'si'})[m[2]]||m[3],st=okP(k)?'done':(S.en||{})[k]==h?'paus':'av';
- b.classList.remove('done','paus');if(st!='av')b.classList.add(st);
- let d=b.querySelector('.bd');if(!d){d=document.createElement('small');d.className='bd';b.appendChild(d)}
- d.textContent={done:'✅ Completada hoy',paus:'⏸ Pausada',av:'▶ Disponible'}[st]})}
 $('tip').textContent=TIPS[ti];iconos();aplicar();const DIAS=["lunes","martes","miércoles","jueves","viernes","sábado","domingo"],MESES=["enero","febrero","marzo","abril","mayo","junio","julio","agosto","septiembre","octubre","noviembre","diciembre"],ABC="ABCDEFGHIJKLMNÑOPQRSTUVWXYZ".split(""),
 VIS=['🍎','🐶','🚗','🌻','🐟','🏠','🎈','🍰','🍌','🐱','⚽','🎸','🚲','⭐','🍇','🦋','🎂','☂️','🔔','🌙'],DIR=["norte","este","sur","oeste"];
 Q.num={t:"🔟 Memoria de Números",g:d=>{const n=[4,6,8][d],a=Array.from({length:n},()=>rnd(0,9)),i=rnd(0,n-1);return{pre:{t:a.join("  —  "),ms:5000+d*500},q:"¿Qué número estaba en la posición "+(i+1)+"?",ok:a[i],bad:shuf([0,1,2,3,4,5,6,7,8,9].filter(x=>x!=a[i]))}}};
@@ -470,4 +527,152 @@ function pintarCr(){$('cr-lista').innerHTML=['sentado','apoyo','pie'].map(l=>'<h
 function togCr(id){const k=sel.indexOf(id);if(k>=0)sel.splice(k,1);else if(sel.length<10)sel.push(id);else aviso("Máximo 10 ejercicios",1);pintarCr()}
 function guardarRut(){if(sel.length<3){aviso("Elegí al menos 3 ejercicios",1);return}S.rut=[...sel];armarRut();S.pl=null;guardar();aviso("¡Rutina guardada! La encontrás como ⭐ Mi rutina");ir('menu-cuerpo')}
 armarRut();pintarInicio();navAct('inicio');
+</script>
+<script>
+/* ===== MEJORAS v2: Mi día, medicamentos, turnos, respiración, tendencias, modo acompañamiento ===== */
+function asegurar(){S.med=Array.isArray(S.med)?S.med:[];S.cit=Array.isArray(S.cit)?S.cit:[];['tomas','ah','rl','avc'].forEach(k=>{if(!S[k]||typeof S[k]!='object'||Array.isArray(S[k]))S[k]={}});S.snz={};S.sim=S.sim?1:0;S.rutas=Array.isArray(S.rutas)?S.rutas:[];if(S.rut&&S.rut.length&&!S.rutas.length)S.rutas.push({id:'r0',n:'Mi rutina',e:[...S.rut]});S.habs=Array.isArray(S.habs)?S.habs:[];['hlog','mis','dd'].forEach(k=>{if(!S[k]||typeof S[k]!='object'||Array.isArray(S[k]))S[k]={}});S.ddn=+S.ddn||0;S.maga=+S.maga||6;if(!S.cu||typeof S.cu!='object')S.cu={a:0,m:1,t:1,x:1,n:''}}
+asegurar();
+const iso=(o=0)=>{const d=new Date();d.setDate(d.getDate()+o);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+const hm=()=>{const d=new Date();return String(d.getHours()).padStart(2,'0')+':'+String(d.getMinutes()).padStart(2,'0')};
+const mn=x=>+x.slice(0,2)*60+ +x.slice(3);
+const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+function dosisDe(o){const f=iso(o),d=new Date();d.setDate(d.getDate()+o);const w=(d.getDay()+6)%7,L=[];
+ S.med.forEach(m=>{if((m.ini&&f<m.ini)||(m.fin&&f>m.fin)||!m.dias.includes(w))return;m.hs.forEach(h=>L.push({m,h,k:f+'|'+m.id+'|'+h}))});return L.sort((a,b)=>a.h<b.h?-1:1)}
+function tomar(k,e){const m=S.med.find(x=>x.id==k.split('|')[1]);
+ if(e=='t'){S.tomas[k]='t';if(m&&m.stock!=null&&m.stock>0){m.stock--;if(m.stock<=m.avisa)aviso('Registrado. Quedan pocas unidades de '+m.n+': '+m.stock,1);else aviso('Registrado ✓')}else aviso('Registrado ✓')}
+ else if(e=='o'){S.tomas[k]='o';aviso('Anotado como omitido. No tomes una dosis extra para compensar; ante dudas, consultá a tu profesional.',1)}
+ else{S.snz[k]=Date.now()+15*6e4;aviso('Te lo recuerdo en 15 minutos')}
+ guardar();pintarSalud();pintarMiDia()}
+let md=[1,1,1,1,1,1,1];
+function pintarDias(){$('m-dias').innerHTML=DSC.map((l,i)=>`<button class="mini" aria-pressed="${md[i]?'true':'false'}" style="${md[i]?'background:var(--az);color:#fff':''}" onclick="md[${i}]^=1;pintarDias()">${l}</button>`).join('')}
+function agregarMed(){permisoNotif();const n=$('m-n').value.trim(),hs=[...new Set(($('m-h').value.match(/\b\d{1,2}[:.]\d{2}\b/g)||[]).map(x=>{const[a,b]=x.split(/[:.]/);return a.padStart(2,'0')+':'+b}))].filter(x=>+x.slice(0,2)<24&&+x.slice(3)<60).sort();
+ if(!n||!hs.length){aviso('Escribí el nombre y al menos un horario (ej: 08:00, 20:00)',1);return}
+ const dias=md.map((v,i)=>v?i:-1).filter(i=>i>=0);if(!dias.length){aviso('Elegí al menos un día',1);return}
+ const st=$('m-s').value;if($('m-f').value&&$('m-i').value&&$('m-f').value<$('m-i').value){aviso('La fecha final es anterior a la inicial',1);return}
+ S.med.push({id:Date.now().toString(36),n,dosis:$('m-d').value.trim(),hs,dias,ini:$('m-i').value||iso(),fin:$('m-f').value||'',stock:st===''?null:Math.max(0,+st|0),avisa:5});
+ ['m-n','m-d','m-h','m-s','m-i','m-f'].forEach(i=>$(i).value='');guardar();pintarSalud();pintarMiDia();aviso('Medicamento agregado ✓')}
+function borrarMed(id){const m=S.med.find(x=>x.id==id);if(m&&confirm('¿Borrar '+m.n+'? Se conserva su historial de tomas.')){S.med=S.med.filter(x=>x.id!=id);guardar();pintarSalud();pintarMiDia()}}
+function agregarCit(){permisoNotif();const t=$('c-t').value.trim(),f=$('c-f').value,h=$('c-h').value||'09:00';if(!t||!f){aviso('Escribí qué turno es y la fecha',1);return}
+ S.cit.push({id:Date.now().toString(36),t,f,h});S.cit.sort((a,b)=>a.f+a.h<b.f+b.h?-1:1);$('c-t').value='';guardar();pintarSalud();aviso('Turno guardado ✓')}
+function borrarCit(id){if(confirm('¿Borrar este turno?')){S.cit=S.cit.filter(x=>x.id!=id);guardar();pintarSalud()}}
+function pintarSalud(){const L=dosisDe(0),now=iso()+' '+hm();pintarDias();
+ $('s-dosis').innerHTML='<h3>💊 Medicamentos de hoy</h3>'+(L.length?L.map(d=>{const s=S.tomas[d.k];return '<div class="dosis"><b>'+d.h+' · '+esc(d.m.n)+'</b> '+esc(d.m.dosis||'')+'<br>'+(s=='t'?'✅ Tomado':s=='o'?'⏭️ Omitido':'<div class="r"><button style="background:var(--vds)" onclick="tomar(\''+d.k+'\',\'t\')">✅ Tomado</button><button style="background:var(--nas)" onclick="tomar(\''+d.k+'\',\'p\')">⏰ Posponer</button><button style="background:var(--ros)" onclick="tomar(\''+d.k+'\',\'o\')">⏭️ Omitido</button></div>')+'</div>'}).join(''):'<p class="hl">No tenés tomas programadas hoy.</p>');
+ $('s-meds').innerHTML=S.med.length?'<h3>Mis medicamentos</h3>'+S.med.map(m=>'<div class="dosis"><b>'+esc(m.n)+'</b> '+esc(m.dosis||'')+'<br>🕒 '+m.hs.join(', ')+' · '+(m.dias.length==7?'todos los días':m.dias.map(i=>DSC[i]).join(' '))+(m.fin?' · hasta '+m.fin.split('-').reverse().join('/'):'')+(m.stock!=null?'<br>📦 Quedan: '+m.stock+(m.stock<=m.avisa?' ⚠️ pocas':''):'')+'<div class="r"><button style="background:var(--ros)" onclick="borrarMed(\''+m.id+'\')">🗑️ Borrar</button></div></div>').join(''):'';
+ const C=S.cit.filter(c=>c.f+' '+c.h>=now);
+ $('s-cit').innerHTML=C.length?C.map(c=>'<div class="dosis"><b>'+esc(c.t)+'</b><br>📅 '+c.f.split('-').reverse().join('/')+' · '+c.h+'<div class="r"><button style="background:var(--ros)" onclick="borrarCit(\''+c.id+'\')">🗑️ Borrar</button></div></div>').join(''):'<p class="hl">No hay turnos próximos.</p>';
+ let H='';for(let o=0;o>-7;o--){const D=dosisDe(o);if(D.length)H+='<p class="hl">'+(o?o==-1?'Ayer':iso(o).split('-').reverse().slice(0,2).join('/'):'Hoy')+': '+D.filter(d=>S.tomas[d.k]=='t').length+' de '+D.length+' tomas registradas</p>'}
+ $('s-hist').innerHTML=H||'<p class="hl">Todavía no hay tomas programadas.</p>'}
+function pintarMiDia(){const h=fecha(),D=dosisDe(0),dt=D.filter(d=>S.tomas[d.k]=='t').length,pd=S.pd.d==h?S.pd.k:[],fis=pd.filter(k=>CATB(k)).length,men=pd.length-fis,pl=planHoy(),pp=pl.filter(okP).length,ag=S.agua.d==h?S.agua.n:0,mg=S.maga||6,
+ C=[['💊','Medicamentos',D.length?dt+' de '+D.length:'sin tomas hoy',D.length?dt/D.length:null],['💧','Agua',ag+' de '+mg+' vasos',Math.min(1,ag/mg)],['🏃','Actividad física',fis?fis+' hecha(s)':'pendiente',Math.min(1,fis)],['🧠','Ejercicio mental',men?men+' hecho(s)':'pendiente',Math.min(1,men)],['🎯','Objetivos del plan',pp+' de '+pl.length,pl.length?pp/pl.length:null],...habC()],
+ V=C.filter(c=>c[3]!==null),p=Math.round(V.reduce((a,c)=>a+c[3],0)*100/V.length);
+ $('midia').innerHTML='<b style="font-size:1.4rem">☀️ Mi día · '+p+'%</b><br><small>🏅 Nivel '+nivel().i+' · '+nivel().n+'</small><div class="barra"><i style="width:'+p+'%;transition:none"></i></div>'+C.map(c=>'<p class="pi">'+(c[3]>=1?'✅':'⬜')+' '+c[0]+' '+c[1]+': <b>'+c[2]+'</b></p>').join('')+'<button class="btn" onclick="ir(\'salud\')">💊 Mi salud</button><button class="btn mo" onclick="ir(\'habitos\')">🌱 Mis hábitos</button><button class="btn vd" onclick="leerDia()">🔊 Escuchar mi día</button>';iconos($('midia'))}
+function leerDia(){const D=dosisDe(0).filter(d=>!S.tomas[d.k]),p=$('midia').querySelector('b').textContent.split('·')[1].replace('%',' por ciento');
+ decir('Tu día va '+p+'. '+(D.length?'Tenés '+D.length+' toma'+(D.length>1?'s':'')+' pendiente'+(D.length>1?'s':'')+': '+D.map(d=>d.m.n+' a las '+d.h).join(', '):'No tenés medicamentos pendientes'),1)}
+/* avisos: funcionan mientras la app está abierta (o instalada y activa) */
+const avisados=new Set();
+function permisoNotif(){try{if('Notification' in window&&Notification.permission=='default')Notification.requestPermission()}catch(e){}}
+function notif(t,c){aviso(t,1);if(!('Notification' in window)||Notification.permission!='granted')return;const o={body:t,tag:c};
+ try{navigator.serviceWorker.getRegistration().then(r=>r?r.showNotification('Acompañante de Salud',o):new Notification('Acompañante de Salud',o))}catch(e){try{new Notification('Acompañante de Salud',o)}catch(_){}}}
+function revisar(){const now=hm();
+ dosisDe(0).forEach(d=>{const z=d.k+(S.snz[d.k]||''),df=mn(now)-mn(d.h);if(df>=0&&df<=120&&!S.tomas[d.k]&&!(S.snz[d.k]>Date.now())&&!avisados.has(z)){avisados.add(z);notif('💊 Es hora de '+d.m.n+(d.m.dosis?' ('+d.m.dosis+')':'')+'. Abrí Mi salud para registrar.',d.k)}});
+ S.cit.forEach(c=>{const ms=new Date(c.f+'T'+c.h)-Date.now();[[864e5,'mañana'],[36e5,'en una hora']].forEach(([w,t])=>{const k=c.id+w;if(ms>0&&ms<=w&&!S.avc[k]){S.avc[k]=1;guardar();notif('📅 Turno '+t+': '+c.t+' ('+c.h+')',k)}})})}
+setInterval(revisar,30000);
+function respirar(){clearInterval(tmr);const P=[['Inspirá suave por la nariz',4,1.5],['Mantené un momento',2,1.5],['Soltá el aire despacio',6,1]],c=$('rc2');let p=0,r=P[0][1],n=0;
+ const ini=()=>{$('rt2').textContent=P[p][0];c.style.transitionDuration=P[p][1]+'s';c.style.transform='scale('+P[p][2]+')';decir(P[p][0],1)};ini();
+ tmr=setInterval(()=>{if(--r<=0){p=(p+1)%3;if(!p&&++n>=5){clearInterval(tmr);$('rt2').textContent='¡Muy bien! Terminaste 😌';c.style.transform='scale(1)';S.rl[fecha()]=(S.rl[fecha()]||0)+1;guardar();revMis();sonar([523,659]);return}r=P[p][1];ini()}},1000)}
+/* tendencias propias (sin conclusiones médicas) */
+const _pg=pintarProg;pintarProg=function(){_pg();
+ const R=n=>[0,n].map(s=>{const W=[...Array(n)].map((_,i)=>-(i+s)),F=W.map(o=>fecha(o)),I=new Set(W.map(o=>iso(o)));
+  return[F.filter(f=>S.dias[f]>0).length,F.reduce((a,f)=>a+(S.ah[f]||0),0),F.reduce((a,f)=>a+(S.dias[f]||0),0),Object.keys(S.tomas).filter(k=>S.tomas[k]=='t'&&I.has(k.slice(0,10))).length,F.reduce((a,f)=>a+(S.rl[f]||0),0)]}),
+ N=['📅 Días con actividad','💧 Vasos de agua','🎮 Sesiones (juegos y ejercicios)','💊 Tomas registradas','🌬️ Pausas de respiración'],
+ B=(t,a)=>'<h3>'+t+'</h3>'+N.map((x,i)=>'<p class="hl">'+x+': <b>'+a[0][i]+'</b> <small>(período anterior: '+a[1][i]+')</small></p>').join('');
+ $('pg').insertAdjacentHTML('afterbegin','<div class="plan"><h3 style="margin:0">📈 Tus tendencias</h3>'+B('Últimos 7 días',R(7))+B('Últimos 30 días',R(30))+'<p class="hl">Son solo tus propios registros, para ver tu constancia. No son una medición médica.</p></div>')};
+/* importar con validación y copia previa */
+function importar(){try{const o=JSON.parse($('datos').value);
+ const ok=o&&typeof o=='object'&&!Array.isArray(o)&&('pts' in o||'dias' in o||'med' in o)&&Number.isFinite(o.pts==null?0:o.pts)&&(o.dias==null||typeof o.dias=='object')&&(o.cit==null||Array.isArray(o.cit))&&(o.med==null||(Array.isArray(o.med)&&o.med.every(m=>m&&typeof m.n=='string'&&Array.isArray(m.hs)&&Array.isArray(m.dias))));
+ if(!ok)throw 0;if(!confirm('Esto reemplaza tu progreso actual. ¿Continuar?'))return;
+ try{localStorage.setItem('saludActivaCopia',JSON.stringify(S))}catch(e){}
+ S=Object.assign(def(),o);asegurar();guardar();aplicar();pintarInicio();pintarAj();aviso('Progreso importado ✓')}catch(e){aviso('Archivo no válido: no se cambió nada',1)}}
+const _rei=reiniciar;reiniciar=function(){const c=rst;_rei();if(c){try{localStorage.removeItem('saludActivaCopia')}catch(e){}asegurar();guardar();pintarInicio()}};
+/* modo acompañamiento */
+function modoSimple(){S.sim=S.sim?0:1;if(S.sim){S.voz=1;S.xl=1;S.fs=Math.max(S.fs,2)}aplicar();guardar();ir('inicio')}
+const _ap=aplicar;aplicar=function(){_ap();document.body.classList.toggle('simple',!!S.sim);const b=$('b-sim');if(b)b.textContent='🤝 Modo acompañamiento: '+(S.sim?'sí':'no')};
+document.querySelector('#ajustes .aj').insertAdjacentHTML('afterbegin','<button id="b-sim" onclick="modoSimple()"></button>');
+const _ir=ir;ir=function(id){_ir(id);if(id=='salud')pintarSalud();if(id=='resp'){$('rt2').textContent='Cuando quieras, tocá Comenzar';$('rc2').style.transform='scale(1)'}};
+const _pi=pintarInicio;pintarInicio=function(){_pi();pintarMiDia()};
+SEC.salud='salud';SEC.resp='salud';
+if('serviceWorker' in navigator&&location.protocol.startsWith('http'))window.addEventListener('load',()=>navigator.serviceWorker.register('sw.js').catch(()=>{}));
+aplicar();navAct('inicio');revisar();
+</script>
+<script>
+/* ===== MEJORAS v3 ===== */
+const DSC=['Lu','Ma','Mi','Ju','Vi','Sá','Do'],DSE=['Lun','Mar','Mié','Jue','Vie','Sáb','Dom'];
+let pausaG=0,edId=null,edQ=0;
+/* hecho: racha con descanso, misiones, desafío y logros nuevos */
+const _h=hecho;hecho=function(m){const rd=S.rd,rc=S.racha,r=_h(m);
+ if(rd&&rd==fecha(-2)){S.racha=rc+1;S.mejor=Math.max(S.mejor,S.racha)}
+ revMis(r);revDes(r);LG.forEach(l=>{if(!S.lg[l[0]]&&l[4](S)){S.lg[l[0]]=1;S.pts+=50;r.p+=50;r.ex.push('🏆 Logro: '+l[2]+' +50 ⭐')}});guardar();pintarInicio();return r};
+const _ag=agua;agua=function(d){_ag(d);S.ah[fecha()]=S.agua.n;guardar();revMis()};
+LG.push(['8','🎯','Misionero','Cumplí una misión semanal',s=>!!(s.mis&&s.mis.d&&s.mis.d.length)],['9','🌱','Hábitos propios','Creá un hábito propio',s=>(s.habs||[]).length>0],['10','🧩','Desafío diario','Completá el desafío del día',s=>(s.ddn||0)>=1],['11','🌤️','Constancia mental','Completá 5 desafíos diarios',s=>(s.ddn||0)>=5],['12','🌬️','Calma','Hacé 3 pausas de respiración',s=>Object.values(s.rl||{}).reduce((a,b)=>a+b,0)>=3],['13','🔥','Buen ritmo','Conseguí una racha de 3 días',s=>s.mejor>=3]);
+/* niveles y misiones semanales */
+const NIV=[[0,'Principiante'],[100,'Aprendiz'],[300,'Constante'],[600,'Activo'],[1000,'Experto'],[2000,'Maestro']];
+function nivel(){let i=0;NIV.forEach((n,k)=>{if(S.pts>=n[0])i=k});const a=NIV[i][0],b=NIV[i+1]?NIV[i+1][0]:null;return{i:i+1,n:NIV[i][1],p:b?Math.round((S.pts-a)*100/(b-a)):100,b}}
+function misiones(){const wi=(new Date().getDay()+6)%7,W=[...Array(7)].map((_,i)=>fecha(i-wi)),H=S.hist.filter(x=>W.includes(x.f));
+ return[['fis','🏃','Hacé 3 sesiones de actividad física',3,H.filter(x=>CATB(x.a)).length],['men','🧠','Jugá 3 juegos mentales distintos',3,new Set(H.filter(x=>!CATB(x.a)).map(x=>x.a)).size],['con','📅','Tené actividad en 4 días distintos',4,W.filter(f=>S.dias[f]>0).length],['agu','💧','Registrá agua en 4 días',4,W.filter(f=>S.ah[f]>0).length],['res','🌬️','Hacé 2 pausas de respiración',2,W.reduce((a,f)=>a+(S.rl[f]||0),0)]]}
+function revMis(r){const w=fecha(-((new Date().getDay()+6)%7));if(S.mis.w!=w)S.mis={w,d:[]};
+ misiones().forEach(m=>{if(m[4]>=m[3]&&!S.mis.d.includes(m[0])){S.mis.d.push(m[0]);S.pts+=40;const t='🎯 Misión cumplida: '+m[2]+' +40 ⭐';if(r){r.p+=40;r.ex.push(t)}else aviso(t)}});guardar()}
+/* desafío mental diario */
+function desafio(){const n=S.tm>=15?4:3,x=DN%89+7,k=a=>((a.charCodeAt(0)*31+a.charCodeAt(a.length-1))*x)%97;return[...MM].sort((a,b)=>k(a)-k(b)||(a<b?-1:1)).slice(0,n)}
+function pintarDesafio(){const L=desafio();$('desafio').innerHTML='<b style="font-size:1.3rem">🧩 Desafío de hoy · '+L.filter(okP).length+'/'+L.length+'</b>'+L.map(k=>'<p class="pi" onclick="irPlan(\''+k+'\')" style="cursor:pointer">'+(okP(k)?'✅':'⬜')+' '+ACT[k][0]+' · '+['Fácil','Difícil','Experto'][nivelDe(k)]+' · jugado '+(S.cnt[k]||0)+' veces</p>').join('')+'<p class="hl">Tocá un juego para empezar. La dificultad se adapta sola. Es solo un pasatiempo: no mide tu memoria ni tu salud. Desafíos completos: '+S.ddn+'.</p>';iconos($('desafio'))}
+function revDes(r){const L=desafio();if(L.every(okP)&&S.dd.d!=fecha()){S.dd={d:fecha()};S.ddn++;S.pts+=30;const t='🧩 ¡Desafío del día completo! +30 ⭐';if(r){r.p+=30;r.ex.push(t)}else aviso(t)}}
+/* hábitos personalizables */
+const HP=[['🚶','Caminata',1],['🤸','Pausa activa',2],['😴','Descanso / siesta',1],['📖','Lectura',1]];
+function habC(){const L=S.hlog[fecha()]||{},d=S.habs.filter(x=>(L[x.id]||0)>=x.m).length;return S.habs.length?[['🌱','Mis hábitos',d+' de '+S.habs.length,d/S.habs.length]]:[]}
+function hAdd(n,e,m){n=(n||'').trim();m=Math.max(1,Math.min(20,+m||1));if(!n){aviso('Escribí el nombre del hábito',1);return}S.habs.push({id:Date.now().toString(36)+S.habs.length,n,e:e||'🌱',m});guardar();pintarHabs();pintarMiDia()}
+function hMas(id,d){const h=fecha();S.hlog[h]=S.hlog[h]||{};S.hlog[h][id]=Math.max(0,Math.min(30,(S.hlog[h][id]||0)+d));guardar();pintarHabs();pintarMiDia()}
+function hMeta(id,d){const x=S.habs.find(y=>y.id==id);x.m=Math.max(1,Math.min(20,x.m+d));guardar();pintarHabs();pintarMiDia()}
+function hDel(id){const x=S.habs.find(y=>y.id==id);if(x&&confirm('¿Borrar el hábito «'+x.n+'»?')){S.habs=S.habs.filter(y=>y.id!=id);guardar();pintarHabs();pintarMiDia()}}
+function maga(d){S.maga=Math.max(2,Math.min(12,(S.maga||6)+d));guardar();pintarHabs();pintarInicio()}
+function pintarHabs(){const L=S.hlog[fecha()]||{};
+ $('h-lista').innerHTML=S.habs.length?S.habs.map(x=>`<div class="dosis"><b>${x.e} ${esc(x.n)}</b> · hoy <b>${L[x.id]||0}</b> de ${x.m}<div class="r"><button style="background:var(--vds)" onclick="hMas('${x.id}',1)">➕ Registrar</button><button style="background:var(--az)" onclick="hMas('${x.id}',-1)">➖ Quitar</button></div><div class="r"><button style="background:var(--mo)" onclick="hMeta('${x.id}',-1)">Meta −</button><button style="background:var(--mo)" onclick="hMeta('${x.id}',1)">Meta +</button><button style="background:var(--ros)" onclick="hDel('${x.id}')">🗑️ Borrar</button></div></div>`).join(''):'<p class="hl">Todavía no elegiste hábitos. Sumá los que quieras.</p>';
+ $('h-pre').innerHTML=HP.map(p=>`<button class="mini" onclick="hAdd('${p[1]}','${p[0]}',${p[2]})">${p[0]} ${p[1]}</button>`).join('');$('h-ag').textContent=S.maga}
+/* rutinas: varias, editar, duplicar, eliminar, reordenar */
+function pintarCr(){const nm=id=>{const[l,i]=id.split(':');return RUT[l][1][+i][0]};
+ $('cr-lista').innerHTML=(sel.length?'<h3 class="hl">Tu orden:</h3>'+sel.map((id,i)=>`<div class="ord"><span>${i+1}. ${nm(id)}</span><button class="mini" aria-label="Subir" onclick="movCr(${i},-1)">⬆️</button><button class="mini" aria-label="Bajar" onclick="movCr(${i},1)">⬇️</button></div>`).join(''):'')
+ +['sentado','apoyo','pie'].map(l=>'<h3 class="hl">'+RUT[l][0]+'</h3>'+RUT[l][1].map((e,i)=>{const id=l+':'+i,k=sel.indexOf(id);return '<button class="chk" onclick="togCr(\''+id+'\')">'+(k>=0?'☑️ '+(k+1)+'. ':'⬜ ')+e[0]+'</button>'}).join('')).join('')+'<p>Elegidos: <b>'+sel.length+'</b> de 10</p>'}
+function movCr(i,d){const j=i+d;if(j<0||j>=sel.length)return;[sel[i],sel[j]]=[sel[j],sel[i]];pintarCr()}
+function guardarRut(){if(sel.length<3){aviso('Elegí al menos 3 ejercicios',1);return}const n=$('cr-n').value.trim()||'Mi rutina '+(S.rutas.length+1),r=edId&&S.rutas.find(x=>x.id==edId);
+ if(r){r.n=n;r.e=[...sel]}else S.rutas.push({id:Date.now().toString(36),n,e:[...sel]});S.rut=[...sel];armarRut();S.pl=null;edId=null;guardar();aviso('¡Rutina guardada!');ir('misrut')}
+function pintarMisRut(){$('mr-l').innerHTML=S.rutas.length?S.rutas.map(r=>`<div class="dosis"><b>${esc(r.n)}</b> · ${r.e.length} ejercicios${r.e.join()==S.rut.join()?' · ✅ activa':''}<div class="r"><button style="background:var(--vds)" onclick="usarRut('${r.id}')">▶️ Usar</button><button style="background:var(--az)" onclick="editarRut('${r.id}')">✏️ Editar</button></div><div class="r"><button style="background:var(--mo)" onclick="dupRut('${r.id}')">⧉ Duplicar</button><button style="background:var(--ros)" onclick="delRut('${r.id}')">🗑️ Eliminar</button></div></div>`).join(''):'<p class="hl">Todavía no guardaste rutinas.</p>'}
+function usarRut(id){const r=S.rutas.find(x=>x.id==id);S.rut=[...r.e];armarRut();S.pl=null;guardar();verEj('rut')}
+function editarRut(id){edId=id;edQ=1;ir('creador')}
+function dupRut(id){const r=S.rutas.find(x=>x.id==id);S.rutas.push({id:Date.now().toString(36),n:r.n+' (copia)',e:[...r.e]});guardar();pintarMisRut()}
+function delRut(id){const r=S.rutas.find(x=>x.id==id);if(!confirm('¿Eliminar «'+r.n+'»?'))return;const act=r.e.join()==S.rut.join();S.rutas=S.rutas.filter(x=>x.id!=id);if(act){S.rut=S.rutas[0]?[...S.rutas[0].e]:[];armarRut();S.pl=null}guardar();pintarMisRut()}
+/* entrenador: figura animada y pausa */
+const AN=[[/cuello/i,'cuello'],[/hombro|cruz/i,'hombros'],[/cielo/i,'brazos'],[/marcha|caminata|rodilla a la mano/i,'marcha'],[/tobillo|extensi|flexi.n de pierna|costado|equilibrio/i,'pierna'],[/talones|sentadilla|pared|punta/i,'sube'],[/lateral|cintura/i,'lateral']];
+const PB=p=>'<span class="ic">'+(p?'▶️':'⏸️')+'</span><span>'+(p?'Continuar':'Pausar')+'</span>';
+function togPausa(){pausaG^=1;$('anim').classList.toggle('pausado',!!pausaG);if(window.speechSynthesis)speechSynthesis.cancel();$('g-p').innerHTML=PB(pausaG)}
+const _pg2=pasoG;pasoG=function(){pausaG=0;$('anim').classList.remove('pausado');$('g-p').innerHTML=PB(0);_pg2();if(gi<ejAct.length)$('anim').className='a-'+(AN.find(a=>a[0].test(ejAct[gi][0]))||[0,'marcha'])[1]};
+/* compartir con persona de confianza (solo con autorización) */
+function cuid(k){S.cu[k]=S.cu[k]?0:1;guardar();pintarCu()}
+function pintarCu(){const c=S.cu,t=(b,s)=>(b?'☑️ ':'⬜ ')+s;$('cu-a').textContent=t(c.a,'Autorizo compartir un resumen con esta persona');$('cu-m').textContent=t(c.m,'Incluir medicamentos (solo cuántas tomas)');$('cu-t').textContent=t(c.t,'Incluir turnos próximos');$('cu-x').textContent=t(c.x,'Incluir actividad y agua');$('cu-n').value=c.n||''}
+function resumen(){const c=S.cu;if(!c.a){aviso('Primero tocá «Autorizo compartir…»',1);return}
+ const W=[...Array(7)].map((_,i)=>-i),L=['Resumen de los últimos 7 días'+(S.nombre?' de '+S.nombre:'')+(c.n?' (para '+c.n+')':'')+':'];
+ if(c.x)L.push('• Días con actividad: '+W.filter(o=>S.dias[fecha(o)]>0).length+' de 7','• Vasos de agua registrados: '+W.reduce((a,o)=>a+(S.ah[fecha(o)]||0),0));
+ if(c.m){let p=0,t=0;W.forEach(o=>dosisDe(o).forEach(d=>{p++;if(S.tomas[d.k]=='t')t++}));L.push('• Tomas de medicamentos registradas: '+t+' de '+p)}
+ if(c.t){const C=S.cit.filter(x=>x.f>=iso()).slice(0,3);L.push('• Próximos turnos: '+(C.length?C.map(x=>x.t+' el '+x.f.split('-').reverse().join('/')+' '+x.h).join('; '):'ninguno cargado'))}
+ L.push('Es un registro personal, no un informe médico.');const x=L.join('\n');
+ if(navigator.share)navigator.share({text:x}).catch(()=>{});else if(navigator.clipboard)navigator.clipboard.writeText(x).then(()=>aviso('Resumen copiado. Pegalo donde quieras compartirlo')).catch(()=>prompt('Copiá este texto:',x));else prompt('Copiá este texto:',x)}
+/* Progreso: semana en barras, nivel y misiones */
+const _pg3=pintarProg;pintarProg=function(){_pg3();revMis();const N=nivel(),M=misiones(),H3=[...$('pg').querySelectorAll('h3')].find(x=>x.textContent.includes('Esta semana'));
+ if(H3){let n=H3.nextElementSibling;for(let i=0;i<7&&n;i++){const t=n.nextElementSibling;n.remove();n=t}
+  const wi=(new Date().getDay()+6)%7,V=[...Array(7)].map((_,i)=>S.dias[fecha(i-wi)]||0),mx=Math.max(1,...V);
+  H3.insertAdjacentHTML('afterend','<div class="sem" role="img" aria-label="Actividades por día: '+V.map((v,i)=>DSE[i]+' '+v).join(', ')+'">'+V.map((v,i)=>'<div class="'+(i==wi?'hoy':i>wi?'fut':'')+'"><b>'+(i>wi?'':v)+'</b><i style="height:'+(v?Math.max(10,Math.round(v*90/mx)):4)+'px"></i><small>'+DSE[i]+'</small></div>').join('')+'</div><p class="hl">Actividades hechas cada día (hoy resaltado) · total: <b>'+V.reduce((a,b)=>a+b)+'</b></p>')}
+ $('pg').insertAdjacentHTML('afterbegin','<div class="plan"><h3 style="margin:0">🏅 Nivel '+N.i+' · '+N.n+'</h3><div class="barra"><i style="width:'+N.p+'%;transition:none"></i></div><p class="hl">'+(N.b?'Te faltan '+(N.b-S.pts)+' ⭐ para el próximo nivel':'¡Llegaste al nivel máximo!')+'</p><h3>🎯 Misiones de esta semana</h3>'+M.map(m=>'<p class="pi">'+(m[4]>=m[3]?'✅':'⬜')+' '+m[1]+' '+m[2]+' ('+Math.min(m[4],m[3])+'/'+m[3]+')</p>').join('')+'<p class="hl">🔥 La racha sube cada día que hacés una actividad. Podés descansar un día sin perderla. Las misiones premian la constancia, no la cantidad.</p></div>')};
+const _pa=pintarAj;pintarAj=function(){_pa();pintarCu()};
+const _pi3=pintarInicio;pintarInicio=function(){_pi3();$('mg').textContent=S.maga||6};
+const _ir3=ir;ir=function(id){_ir3(id);if(id=='habitos')pintarHabs();if(id=='misrut')pintarMisRut();if(id=='menu-mente')pintarDesafio();
+ if(id=='creador'){if(edQ){edQ=0;const r=S.rutas.find(x=>x.id==edId);if(r){sel=[...r.e];$('cr-n').value=r.n}}else{edId=null;sel=[];$('cr-n').value=''}pintarCr()}};
+SEC.habitos='inicio';SEC.misrut='cuerpo';
+pintarInicio();
 </script></body></html>
