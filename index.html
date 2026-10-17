@@ -307,7 +307,7 @@ let qk=0;
 function sigQ(){clearInterval(tmr);const d=+$('dq').value,tk=++qk;it=Q[jq].g(d);bq=1;$('qo').innerHTML='';let t=jq=='cal'||jq=='sec'?25:18;
  const info=()=>$('qs').textContent="Aciertos: "+aci+(d==2&&!bq?" · ⏱️ "+t+" s":""),sig=ms=>setTimeout(()=>{if($('quiz').classList.contains('active'))sigQ()},ms),
  go=()=>{if(tk!=qk)return;bq=0;$('qp').textContent=it.q;decir(it.q);info();
-  if(d==2)tmr=setInterval(()=>{t--;info();if(t<=0){clearInterval(tmr);bq=1;aviso("¡Se acabó el tiempo! Era: "+it.ok,1);sig(2200)}},1000);
+  if(d==2)tmr=setInterval(()=>{t--;info();if(t<=0){clearInterval(tmr);bq=1;aviso("¡Se acabó el tiempo! Era: "+it.ok,1);sig(2200)}}     ,1000);
   const c=$('qo');c.innerHTML='';
   shuf([it.ok,...it.bad.slice(0,[1,3,4][d])]).forEach(x=>{const b=document.createElement('button');b.className='btn';b.textContent=x;
    b.onclick=()=>{if(bq)return;
@@ -463,7 +463,7 @@ function pintarInicio(){const h=fecha(),n=S.dia==h?S.hoy:0,r=(S.rd==h||S.rd==fec
 function pintarProg(){const d=new Date(),y=d.getFullYear(),mo=d.getMonth(),wi=(d.getDay()+6)%7,h=fecha(),r=(S.rd==h||S.rd==fecha(-1)||S.rd==fecha(-2))?S.racha:0,
  sem=[0,1,2,3,4,5,6].map(i=>S.dias[fecha(i-wi)]||0),V=Object.values(S.dias),act=V.filter(v=>v>0).length,meta=V.filter(v=>v>=2).length,
  mes=Object.keys(S.dias).filter(k=>k.startsWith(y+'-'+(mo+1)+'-')).reduce((a,k)=>a+S.dias[k],0),
- T=[['🔥','Racha actual',r+' days'],['🏆','Mejor racha',S.mejor+' days'],['🧠','Juegos mentales',S.nm],['🏃','Ejercicios',S.ne],['⏱️','Tiempo total',Math.round(S.min)+' min'],['⭐','Puntos',S.pts],['📅','Esta semana',sem.reduce((a,b)=>a+b)],['🗓️','Este mes',mes],['🎯','Metas cumplidas',(act?Math.round(meta*100/act):0)+'%']],
+ T=[['🔥','Racha actual',r+' days'],['🏆','Mejor racha',S.mejor+' días'],['🧠','Juegos mentales',S.nm],['🏃','Ejercicios',S.ne],['⏱️','Tiempo total',Math.round(S.min)+' min'],['⭐','Puntos',S.pts],['📅','Esta semana',sem.reduce((a,b)=>a+b)],['🗓️','Este mes',mes],['🎯','Metas cumplidas',(act?Math.round(meta*100/act):0)+'%']],
  n=new Date(y,mo+1,0).getDate(),f=(new Date(y,mo,1).getDay()+6)%7;
  let c=DSC.map(x=>'<b>'+x+'</b>').join('')+'<i></i>'.repeat(f);
  for(let i=1;i<=n;i++){const v=S.dias[y+'-'+(mo+1)+'-'+i]||0;c+='<span>'+(v>=2?'🟢':v?'🟡':'⚪')+'<small>'+i+'</small></span>'}
@@ -675,4 +675,21 @@ const _ir3=ir;ir=function(id){_ir3(id);if(id=='habitos')pintarHabs();if(id=='mis
  if(id=='creador'){if(edQ){edQ=0;const r=S.rutas.find(x=>x.id==edId);if(r){sel=[...r.e];$('cr-n').value=r.n}}else{edId=null;sel=[];$('cr-n').value=''}pintarCr()}};
 SEC.habitos='inicio';SEC.misrut='cuerpo';
 pintarInicio();
+</script>
+<script>/* ===== Botón «Instalar y crear acceso directo» ===== */
+let pInst=null;
+const yaInst=()=>(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)||navigator.standalone===true;
+addEventListener('beforeinstallprompt',e=>{e.preventDefault();pInst=e;pintarInst()});
+addEventListener('appinstalled',()=>{pInst=null;pintarInst();aviso('¡Listo! Buscá el ícono en tu pantalla principal')});
+(function(){const aj=document.querySelector('#ajustes .aj'),H='<div id="inst" style="margin:14px 0"><button class="btn vd" id="inst-b" onclick="instalar()" style="font-size:1.7rem;padding:22px 14px;width:100%">📲 Instalar y crear acceso directo</button><p id="inst-e" style="font-weight:bold;font-size:1.2rem" aria-live="polite"></p><p style="font-size:1.1rem;text-align:left">Este botón instala la app en tu celular y crea un ícono en la pantalla principal. Así la abrís con un solo toque, sin tener que entrar por el link cada vez.</p></div>';
+ if(aj)aj.insertAdjacentHTML('beforebegin',H);else $('ajustes').insertAdjacentHTML('afterbegin',H);iconos($('inst'))})();
+function pintarInst(){const e=$('inst-e');if(!e)return;e.textContent=yaInst()?'✅ La app ya está instalada en este celular.':''}
+async function instalar(){const e=$('inst-e');
+ if(yaInst()){pintarInst();aviso('La app ya está instalada ✓');return}
+ if(pInst){pInst.prompt();try{await pInst.userChoice}catch(_){}pInst=null;return}
+ let t;if(!location.protocol.startsWith('http'))t='Para instalarla, abrí la app desde su link de internet (no desde un archivo guardado en el celular).';
+ else if(/iphone|ipad|ipod/i.test(navigator.userAgent))t='Tocá el botón Compartir (el cuadrado con la flecha hacia arriba, abajo en Safari) y elegí «Agregar a inicio» o «Añadir a pantalla de inicio».';
+ else t='Tocá los 3 puntitos ⋮ del navegador (arriba a la derecha) y elegí «Instalar aplicación» o «Agregar a la pantalla de inicio».';
+ e.textContent='👉 '+t;decir(t,1)}
+pintarInst();
 </script></body></html>
