@@ -714,445 +714,76 @@ async function instalar(){const e=$('inst-e');
  e.textContent='👉 '+t;decir(t,1)}
 pintarInst();
 </script>
+<!-- JUEGOS NUEVOS + LOGROS POR JUEGO: 
+<style>
+.gx{display:grid;gap:8px;max-width:340px;margin:12px auto}
+.gx button{border:0;border-radius:14px;min-height:64px;font-size:2rem;font-weight:bold;color:#fff;cursor:pointer;background:var(--az)}
+.eco button{min-height:110px;opacity:.55;transition:.1s}.eco button.on{opacity:1;transform:scale(1.07);filter:brightness(1.3)}
+.gx button:disabled{opacity:.25}.vid{font-size:1.5rem;font-weight:bold}
+.big2{font-size:2.4rem;font-weight:bold;letter-spacing:2px;margin:14px 0}
+</style>
 <script>
-/* ==========================================================
-   JUEGOS EXTRA - ACOMPAÑANTE DE SALUD ACTIVA (versión nueva)
-   Reemplaza el bloque anterior de addon-juegos por este bloque.
-   Mantiene Simón del juego original y agrega Intruso + Patrón.
-   ========================================================== */
-(function () {
-  'use strict';
-  if (window.__addonJuegosActualizado) return;
-  window.__addonJuegosActualizado = true;
+(()=>{
+const L=k=>(S.lv||{})[k]||0,wait=ms=>new Promise(r=>setTimeout(r,ms)),act=id=>$(id).classList.contains('active');
+const setL=(k,v)=>{S.lv=S.lv||{};S.lv[k]=Math.max(S.lv[k]||0,v);guardar()};
+const up=(k,n)=>{S.gc=S.gc||{};S.gc[k]=(S.gc[k]||0)+(n||1)};
+const SY=['●','▲','■','★','♥','◆','☀','☾'];
+const mk=(id,t,p,body)=>{const d=document.createElement('div');d.id=id;d.className='screen';
+ d.innerHTML='<h2>'+t+'</h2><p>'+p+'</p><p class="vid" id="'+id+'-i"></p>'+body+'<button class="btn volver">⬅️ Volver</button>';
+ d.querySelector('.volver').onclick=()=>ir('menu-mente');document.body.appendChild(d);SEC[id]='mente';ACTV.push(id)};
+const reg=(k,id,name,ic,cls,start)=>{const fn=()=>{marca(k);ir(id);start()};ACT[k]=[name,fn];
+ const b=document.createElement('button');b.className='btn '+cls;b.textContent=ic+' '+name;b.onclick=fn;document.querySelector('#menu-mente .gm').appendChild(b);return fn};
 
-  const AJ = window.AJ = {};
-  AJ.timer = null;
-  AJ.timeout = null;
-  AJ.actual = '';
-  AJ.finalizando = false;
+/* 1) 👁️ Intruso Cambiante: encontrá la casilla distinta; 3 vidas */
+mk('ints','👁️ Intruso Cambiante','Tocá la casilla que tiene un color distinto. Tenés 3 vidas. Sin tiempo.','<div class="gx" id="ints-t"></div>');
+let il=1,iv=3;
+function iBuild(){const n=Math.min(6,2+(il/3|0)),h=rnd(0,359),d=Math.max(5,34-il*2),k=rnd(0,n*n-1),s=rnd(0,1)?d:-d,g=$('ints-t');
+ g.style.gridTemplateColumns='repeat('+n+',1fr)';g.innerHTML='';
+ for(let i=0;i<n*n;i++){const b=document.createElement('button');b.style.background='hsl('+h+' 70% '+(55+(i==k?s:0))+'%)';b.style.minHeight=(n>4?52:72)+'px';b.setAttribute('aria-label','Casilla');
+  b.onclick=()=>{const my=simTok;if(i==k){il++;iBuild();return}iv--;
+   if(iv<1){const nv=il-1;setL('ints',nv);nv>0?celebrar('Intruso Cambiante: nivel '+nv,iniInts,0,['Nivel',nv]):iniInts();return}
+   aviso('Esa no era 💔',1);iBuild()};g.appendChild(b)}
+ $('ints-i').textContent='Nivel '+il+' · '+'❤️'.repeat(iv)}
+const iniInts=reg('ints','ints','Intruso Cambiante','👁️','na',()=>{il=1;iv=3;iBuild()});
 
-  const $aj = id => document.getElementById(id);
-  const mezclar = arr => {
-    const r = arr.slice();
-    for (let i = r.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [r[i], r[j]] = [r[j], r[i]];
-    }
-    return r;
-  };
-  const elegir = arr => arr[Math.floor(Math.random() * arr.length)];
-  const escapar = s => String(s).replace(/[&<>"']/g, c => ({
-    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;'
-  }[c]));
+/* 2) 🔮 Patrón Secreto: descubrí qué sigue. Rondas de 5; con 4 o más aciertos subís de nivel */
+mk('pat','🔮 Patrón Secreto','Descubrí la regla y elegí qué sigue.','<p class="big2" id="pat-q"></p><div id="pat-o"></div>');
+function pGen(l){const t=rnd(0,Math.min(4,1+(l>>1))),Y=shuf(SY);let sq,ans,bad;
+ if(t<2){const m=t+2,n=m*2+1;sq=Array.from({length:n},(_,i)=>Y[i%m]);ans=Y[n%m];bad=Y.filter(x=>x!=ans).slice(0,3)}
+ else if(t==2){const a=rnd(1,15),s=rnd(2,3+l);sq=[0,1,2,3,4].map(i=>a+i*s);ans=a+5*s;bad=near(ans,Math.max(3,s)).slice(0,3)}
+ else if(t==3){const a=rnd(1,10),p=rnd(1,4),q=rnd(2,6);let x=a;sq=[x];for(let i=0;i<5;i++)sq.push(x+=i%2?q:p);ans=x+q;bad=near(ans,3).slice(0,3)}
+ else{const a=rnd(1,3),r=rnd(2,3);sq=[0,1,2,3].map(i=>a*r**i);ans=a*r**4;bad=near(ans,Math.max(3,ans>>1)).slice(0,3)}
+ return{q:sq.join('   ')+'   ❓',ok:String(ans),bad:bad.map(String)}}
+let pq,po,plv;
+function pNext(){const it=pGen(plv);$('pat-i').textContent='Pregunta '+(pq+1)+' de 5 · Nivel '+plv;$('pat-q').textContent=it.q;const o=$('pat-o');o.innerHTML='';
+ shuf([it.ok,...it.bad]).forEach(x=>{const b=document.createElement('button');b.className='btn';b.textContent=x;
+  b.onclick=async()=>{const my=simTok;[...o.children].forEach(c=>c.disabled=true);
+   if(x==it.ok){po++;up('pat');aviso('¡Correcto!')}else aviso('Era '+it.ok,1);guardar();pq++;await wait(1100);if(my!=simTok||!act('pat'))return;
+   if(pq<5)return pNext();if(po>=4)setL('pat',plv);celebrar('Patrón Secreto: '+po+' de 5',iniPat,0,['Aciertos',po])};o.appendChild(b)})}
+const iniPat=reg('pat','pat','Patrón Secreto','🔮','ro',()=>{pq=0;po=0;plv=L('pat')+1;pNext()});
 
-  /* Los datos nuevos se guardan dentro del progreso normal de la app. */
-  function estado() {
-    if (!S.jg || typeof S.jg !== 'object') S.jg = {};
-    const valores = {
-      simMax: 0,
-      inTotal: 0,
-      inBest: 0,
-      inHardTotal: 0,
-      inHardBest: 0,
-      paMax: 0,
-      paTotal: 0
-    };
-    Object.keys(valores).forEach(k => {
-      if (!Number.isFinite(S.jg[k])) S.jg[k] = valores[k];
-    });
-    if (!S.lg || typeof S.lg !== 'object') S.lg = {};
-    return S.jg;
-  }
+/* Contar respuestas correctas por juego de preguntas (para los logros) */
+$('qo').addEventListener('click',e=>{const b=e.target.closest('button');if(b&&!bq&&it&&b.textContent===String(it.ok))up(jq)},true);
 
-  /* Dieciocho logros: seis de Simón, seis del Intruso y seis de Patrón. */
-  const LOGROS = [
-    ['aj-s05', '🎨', 'Simón: nivel 5', 'Llegá al nivel 5 de Simón.', s => estado().simMax >= 5],
-    ['aj-s10', '🌈', 'Simón: nivel 10', 'Llegá al nivel 10 de Simón.', s => estado().simMax >= 10],
-    ['aj-s15', '🧠', 'Simón: nivel 15', 'Llegá al nivel 15 de Simón.', s => estado().simMax >= 15],
-    ['aj-s20', '🏆', 'Maestro de Simón', 'Llegá al nivel 20 de Simón. No depende de cuántas partidas termines.', s => estado().simMax >= 20],
-    ['aj-s25', '💎', 'Simón: nivel 25', 'Llegá al nivel 25 de Simón.', s => estado().simMax >= 25],
-    ['aj-s30', '👑', 'Leyenda de Simón', 'Llegá al nivel 30 de Simón.', s => estado().simMax >= 30],
-
-    ['aj-i05', '🔎', 'Ojo de detective', 'Encontrá 5 intrusos correctos en total.', s => estado().inTotal >= 5],
-    ['aj-i15', '🕵️', 'Detective experto', 'Encontrá 15 intrusos correctos en total.', s => estado().inTotal >= 15],
-    ['aj-i30', '🏅', 'Maestro del Intruso', 'Encontrá 30 intrusos correctos en total.', s => estado().inTotal >= 30],
-    ['aj-iR5', '🔥', 'Racha detectivesca', 'Encontrá 5 intrusos seguidos en una misma partida.', s => estado().inBest >= 5],
-    ['aj-iD5', '⏱️', 'Bajo presión', 'Encontrá 5 intrusos jugando en Difícil.', s => estado().inHardTotal >= 5],
-    ['aj-iD10', '⚡', 'Reflejos rápidos', 'Encontrá 10 intrusos seguidos en Difícil.', s => estado().inHardBest >= 10],
-
-    ['aj-p03', '🧩', 'Patrones iniciales', 'Llegá al nivel 3 de Patrón secreto.', s => estado().paMax >= 3],
-    ['aj-p06', '🔷', 'Patrones en marcha', 'Llegá al nivel 6 de Patrón secreto.', s => estado().paMax >= 6],
-    ['aj-p09', '🔶', 'Mente flexible', 'Llegá al nivel 9 de Patrón secreto.', s => estado().paMax >= 9],
-    ['aj-p12', '🌀', 'Cazador de patrones', 'Llegá al nivel 12 de Patrón secreto.', s => estado().paMax >= 12],
-    ['aj-p15', '🌟', 'Patrones avanzados', 'Llegá al nivel 15 de Patrón secreto.', s => estado().paMax >= 15],
-    ['aj-p20', '🏆', 'Genio de los patrones', 'Llegá al nivel 20 de Patrón secreto.', s => estado().paMax >= 20]
-  ];
-  AJ.logros = LOGROS;
-  LOGROS.forEach(l => {
-    if (!LG.some(existing => existing[0] === l[0])) LG.push(l);
-  });
-
-  AJ.comprobarLogros = function () {
-    estado();
-    const nuevos = [];
-    LOGROS.forEach(l => {
-      if (!S.lg[l[0]] && l[4](S)) {
-        S.lg[l[0]] = 1;
-        S.pts = (Number(S.pts) || 0) + 50;
-        nuevos.push(l[2]);
-      }
-    });
-    if (nuevos.length) {
-      guardar();
-      if (typeof pintarInicio === 'function') pintarInicio();
-      aviso('🏆 Logro desbloqueado: ' + nuevos.join(', ') + ' · +50 ⭐ por logro');
-    }
-    return nuevos.length;
-  };
-
-  /* Estilos propios: aprovechan colores y botones de la app. */
-  const css = document.createElement('style');
-  css.textContent = `
-    .ajg-panel{margin:14px 0;padding:16px;border:2px solid var(--borde, #d9e2ef);border-radius:18px;background:var(--tarjeta, #fff);}
-    .ajg-info{font-size:1.08rem;line-height:1.5;margin:8px 0 14px;}
-    .ajg-hearts{font-size:1.55rem;letter-spacing:4px;text-align:center;margin:8px 0;}
-    .ajg-stats{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px 0;}
-    .ajg-chip{border-radius:12px;padding:8px 11px;background:var(--fondo, #edf2f8);font-weight:700;}
-    .ajg-options{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin:15px 0;}
-    .ajg-option{font-size:1.15rem;min-height:64px;white-space:normal;overflow-wrap:anywhere;}
-    .ajg-sequence{display:flex;flex-wrap:wrap;gap:9px;align-items:center;justify-content:center;margin:18px 0;padding:14px 8px;border-radius:16px;background:var(--fondo, #edf2f8);font-size:clamp(1.2rem,5vw,2rem);font-weight:800;line-height:1.6;}
-    .ajg-question{font-size:1.25rem;font-weight:800;text-align:center;margin:16px 0;}
-    .ajg-timer{height:14px;border-radius:99px;background:#d7dce5;overflow:hidden;margin:8px 0 14px;}
-    .ajg-timer>span{display:block;height:100%;width:100%;background:#e58c2c;transition:width .25s linear;}
-    .ajg-feedback{min-height:2.2em;font-weight:700;text-align:center;margin:10px 0;}
-    .ajg-pattern-head{text-align:center;font-weight:800;font-size:1.15rem;}
-    .ajg-option:disabled{opacity:.55;}
-    @media(max-width:380px){.ajg-options{gap:7px}.ajg-option{font-size:1rem;min-height:58px;padding:10px 7px;}}
-  `;
-  document.head.appendChild(css);
-
-  /* Dos pantallas nuevas y sus accesos en Juegos Mentales. */
-  const gm = document.querySelector('#menu-mente .gm');
-  const simonBtn = gm && Array.from(gm.querySelectorAll('button')).find(b => /Simón: Colores/i.test(b.textContent));
-  if (gm && !document.getElementById('ajg-btn-intruso')) {
-    const b = document.createElement('button');
-    b.id = 'ajg-btn-intruso'; b.className = 'btn ro';
-    b.textContent = '🔎 Intruso cambiante'; b.onclick = () => AJ.abrirIntruso();
-    const p = document.createElement('button');
-    p.id = 'ajg-btn-patron'; p.className = 'btn mo';
-    p.textContent = '🧩 Patrón secreto'; p.onclick = () => AJ.abrirPatron();
-    if (simonBtn && simonBtn.nextSibling) {
-      gm.insertBefore(b, simonBtn.nextSibling);
-      gm.insertBefore(p, b.nextSibling);
-    } else { gm.append(b, p); }
-  }
-
-  function crearPantalla(id, html) {
-    if (document.getElementById(id)) return document.getElementById(id);
-    const d = document.createElement('div');
-    d.id = id; d.className = 'screen'; d.innerHTML = html;
-    const antes = document.getElementById('ejercicios');
-    if (antes && antes.parentNode) antes.parentNode.insertBefore(d, antes);
-    else document.body.appendChild(d);
-    return d;
-  }
-  crearPantalla('aj-intruso', `
-    <h2>🔎 Intruso cambiante</h2>
-    <div class="ajg-panel">
-      <p class="ajg-info">Encontrá la palabra que no pertenece al grupo. Tenés <b>3 corazones</b>.</p>
-      <label for="aj-in-dif"><b>Dificultad</b></label>
-      <select id="aj-in-dif" class="sd" style="margin:8px 0 14px;width:100%">
-        <option value="facil">Fácil · sin tiempo límite</option>
-        <option value="dificil">Difícil · 20 segundos por desafío</option>
-      </select>
-      <button class="btn vd" style="width:100%" onclick="AJ.iniciarIntruso()">▶️ Empezar</button>
-      <p class="ajg-info">En Difícil, cada vez que el reloj llega a cero perdés un corazón. Una respuesta incorrecta también consume uno.</p>
-    </div>
-    <div id="aj-in-juego"></div>
-    <button class="btn volver" onclick="ir('menu-mente')">⬅️ Volver a Juegos Mentales</button>
-  `);
-  crearPantalla('aj-patron', `
-    <h2>🧩 Patrón secreto</h2>
-    <div class="ajg-panel">
-      <p class="ajg-info">Descubrí qué elemento sigue en la secuencia. Cada pocos niveles cambia el estilo del patrón y las reglas se vuelven más complejas. Tenés 3 corazones para toda la partida.</p>
-      <button class="btn vd" style="width:100%" onclick="AJ.iniciarPatron()">▶️ Empezar</button>
-    </div>
-    <div id="aj-pa-juego"></div>
-    <button class="btn volver" onclick="ir('menu-mente')">⬅️ Volver a Juegos Mentales</button>
-  `);
-
-  /* Alta en la app: plan diario, historial, accesos y logros existentes. */
-  ACT.intruso = ['Intruso cambiante', () => AJ.abrirIntruso()];
-  ACT.patron = ['Patrón secreto', () => AJ.abrirPatron()];
-  if (Array.isArray(MM)) ['intruso', 'patron'].forEach(k => { if (!MM.includes(k)) MM.push(k); });
-  SEC['aj-intruso'] = 'mente';
-  SEC['aj-patron'] = 'mente';
-
-  const irBase = ir;
-  ir = function (id) {
-    const esIntruso = id === 'aj-intruso';
-    const esPatron = id === 'aj-patron';
-    if (!esIntruso && !esPatron) AJ.detenerTimers();
-    irBase(id);
-    if (esIntruso) {
-      AJ.actual = 'intruso';
-      marca('intruso');
-      navAct(id);
-      AJ.pantallaIntroIntruso();
-    } else if (esPatron) {
-      AJ.actual = 'patron';
-      marca('patron');
-      navAct(id);
-      AJ.pantallaIntroPatron();
-    }
-  };
-
-  AJ.detenerTimers = function () {
-    if (AJ.timer) clearInterval(AJ.timer);
-    if (AJ.timeout) clearTimeout(AJ.timeout);
-    AJ.timer = null; AJ.timeout = null;
-  };
-
-  /* ---------------- INTRUSO CAMBIANTE ---------------- */
-  const BANCO_IN = [
-    ['Frutas', ['manzana','pera','banana','naranja','uva','durazno'], 'zanahoria'],
-    ['Días de la semana', ['lunes','martes','miércoles','jueves','viernes','sábado'], 'enero'],
-    ['Animales de granja', ['vaca','oveja','gallina','cerdo','caballo','pato'], 'tiburón'],
-    ['Instrumentos musicales', ['guitarra','piano','violín','flauta','tambor','trompeta'], 'martillo'],
-    ['Medios de transporte', ['auto','tren','avión','bicicleta','barco','moto'], 'almohada'],
-    ['Prendas de vestir', ['camisa','pantalón','campera','bufanda','guantes','medias'], 'sartén'],
-    ['Muebles', ['silla','mesa','cama','armario','escritorio','estante'], 'naranja'],
-    ['Herramientas', ['martillo','destornillador','serrucho','pinza','taladro','llave inglesa'], 'sandía'],
-    ['Verduras', ['zanahoria','lechuga','cebolla','zapallo','papa','acelga'], 'guitarra'],
-    ['Países', ['Argentina','Chile','Brasil','Uruguay','Perú','Paraguay'], 'Rosario'],
-    ['Ciudades', ['Rosario','Córdoba','Mendoza','Salta','Tucumán','Bariloche'], 'Italia'],
-    ['Colores', ['rojo','azul','verde','amarillo','violeta','naranja'], 'cuadrado'],
-    ['Partes del cuerpo', ['brazo','pierna','codo','rodilla','hombro','tobillo'], 'ventana'],
-    ['Útiles escolares', ['lápiz','goma','regla','cuaderno','cartuchera','sacapuntas'], 'tenedor'],
-    ['Cosas del baño', ['jabón','toalla','peine','cepillo de dientes','champú','esponja'], 'volante'],
-    ['Cosas de cocina', ['olla','cuchara','plato','vaso','sartén','espátula'], 'bufanda'],
-    ['Meses del año', ['enero','febrero','marzo','abril','mayo','junio'], 'domingo'],
-    ['Formas geométricas', ['círculo','cuadrado','triángulo','rectángulo','rombo','óvalo'], 'durazno'],
-    ['Aves', ['paloma','águila','canario','gorrion','pingüino','loro'], 'delfín'],
-    ['Mamíferos', ['perro','gato','caballo','vaca','mono','elefante'], 'mariposa'],
-    ['Bebidas', ['agua','jugo','leche','té','café','limonada'], 'ensalada'],
-    ['Cosas que alumbran', ['lámpara','linterna','vela','faro','reflector','luz'], 'almuerzo'],
-    ['Climas', ['soleado','lluvioso','ventoso','nublado','nevado','húmedo'], 'zapato'],
-    ['Deportes', ['fútbol','tenis','natación','básquet','vóley','ciclismo'], 'biblioteca'],
-    ['Objetos redondos', ['pelota','rueda','moneda','naranja','plato','aro'], 'escalera']
-  ];
-
-  AJ.pantallaIntroIntruso = function () {
-    AJ.detenerTimers(); AJ.finalizando = false;
-    const g = $aj('aj-in-juego');
-    if (g) g.innerHTML = '';
-    const sel = $aj('aj-in-dif');
-    if (sel && AJ.inDificultad) sel.value = AJ.inDificultad;
-  };
-  AJ.abrirIntruso = function () { ir('aj-intruso'); };
-  AJ.iniciarIntruso = function () {
-    AJ.detenerTimers();
-    AJ.actual = 'intruso'; AJ.finalizando = false;
-    const sel = $aj('aj-in-dif');
-    AJ.inDificultad = sel ? sel.value : 'facil';
-    AJ.inCorazones = 3; AJ.inAciertos = 0; AJ.inRacha = 0; AJ.inHardRacha = 0; AJ.inRespondido = false;
-    AJ.inUltimas = []; AJ.inMazo = mezclar(BANCO_IN.slice());
-    AJ.pintarRondaIntruso();
-  };
-  AJ.pintarRondaIntruso = function () {
-    if (AJ.actual !== 'intruso' || AJ.finalizando) return;
-    AJ.detenerTimers(); AJ.inRespondido = false;
-    if (!AJ.inMazo || !AJ.inMazo.length) AJ.inMazo = mezclar(BANCO_IN.slice());
-    const b = AJ.inMazo.pop();
-    const familia = mezclar(b[1]).slice(0, 3);
-    AJ.inOpciones = mezclar(familia.concat([b[2]]));
-    AJ.inIntruso = b[2]; AJ.inGrupo = b[0];
-    AJ.inTiempo = 20;
-    const g = $aj('aj-in-juego');
-    g.innerHTML = `
-      <div class="ajg-panel">
-        <div class="ajg-hearts" aria-label="Corazones restantes">${'❤️'.repeat(AJ.inCorazones)}${'🖤'.repeat(3-AJ.inCorazones)}</div>
-        <div class="ajg-stats"><span class="ajg-chip">✅ Aciertos: ${AJ.inAciertos}</span><span class="ajg-chip">📚 Grupo: ${escapar(AJ.inGrupo)}</span><span class="ajg-chip">${AJ.inDificultad === 'dificil' ? '⏱️ 20 segundos' : '🌿 Sin reloj'}</span></div>
-        ${AJ.inDificultad === 'dificil' ? '<div class="ajg-timer"><span id="aj-in-barra"></span></div><p id="aj-in-reloj" class="ajg-question">20 segundos</p>' : ''}
-        <p class="ajg-question">¿Cuál de estas palabras es el intruso?</p>
-        <div class="ajg-options">${AJ.inOpciones.map((v,i) => `<button class="btn ajg-option" onclick="AJ.responderIntruso(${i})">${escapar(v)}</button>`).join('')}</div>
-        <p id="aj-in-feedback" class="ajg-feedback" aria-live="polite">Elegí una respuesta.</p>
-      </div>`;
-    if (AJ.inDificultad === 'dificil') {
-      AJ.timer = setInterval(() => {
-        if (AJ.actual !== 'intruso' || AJ.finalizando || AJ.inRespondido) return;
-        AJ.inTiempo--;
-        const r = $aj('aj-in-reloj'), bar = $aj('aj-in-barra');
-        if (r) r.textContent = AJ.inTiempo + (AJ.inTiempo === 1 ? ' segundo' : ' segundos');
-        if (bar) bar.style.width = Math.max(0, AJ.inTiempo * 5) + '%';
-        if (AJ.inTiempo <= 0) AJ.errorIntruso('⏰ Se terminó el tiempo. Perdiste un corazón.');
-      }, 1000);
-    }
-  };
-  AJ.responderIntruso = function (i) {
-    if (AJ.actual !== 'intruso' || AJ.inRespondido || AJ.finalizando) return;
-    AJ.inRespondido = true; AJ.detenerTimers();
-    const correcto = AJ.inOpciones[i] === AJ.inIntruso;
-    const fb = $aj('aj-in-feedback');
-    if (correcto) {
-      AJ.inAciertos++; AJ.inRacha++;
-      const st = estado(); st.inTotal++;
-      if (AJ.inRacha > st.inBest) st.inBest = AJ.inRacha;
-      if (AJ.inDificultad === 'dificil') {
-        AJ.inHardRacha = (AJ.inHardRacha || 0) + 1;
-        st.inHardTotal++;
-        if (AJ.inHardRacha > st.inHardBest) st.inHardBest = AJ.inHardRacha;
-      } else {
-        AJ.inHardRacha = 0;
-      }
-      guardar(); AJ.comprobarLogros();
-      if (fb) fb.textContent = '✅ ¡Bien! ' + AJ.inIntruso + ' no pertenece al grupo.';
-      sonar([660, 880]);
-      AJ.timeout = setTimeout(() => AJ.pintarRondaIntruso(), 650);
-    } else {
-      AJ.inRespondido = false;
-      AJ.errorIntruso('❌ No era esa. La palabra intrusa era ' + AJ.inIntruso + '. Perdiste un corazón.');
-    }
-  };
-  AJ.errorIntruso = function (mensaje) {
-    if (AJ.finalizando) return;
-    AJ.detenerTimers(); AJ.inRespondido = true;
-    AJ.inCorazones = Math.max(0, AJ.inCorazones - 1); AJ.inRacha = 0; AJ.inHardRacha = 0;
-    const fb = $aj('aj-in-feedback');
-    if (fb) fb.textContent = mensaje;
-    const h = $aj('aj-in-juego');
-    if (h) { const heart = h.querySelector('.ajg-hearts'); if (heart) heart.textContent = '❤️'.repeat(AJ.inCorazones) + '🖤'.repeat(3-AJ.inCorazones); }
-    if (AJ.inCorazones <= 0) {
-      AJ.timeout = setTimeout(() => AJ.finalizarIntruso(), 650);
-    } else {
-      AJ.timeout = setTimeout(() => AJ.pintarRondaIntruso(), 950);
-    }
-  };
-  AJ.finalizarIntruso = function () {
-    if (AJ.finalizando) return;
-    AJ.finalizando = true; AJ.detenerTimers(); AJ.comprobarLogros();
-    celebrar('Partida terminada. Encontraste ' + AJ.inAciertos + ' intrusos.', () => ir('menu-mente'), 0, ['Intrusos correctos', AJ.inAciertos, 1]);
-  };
-
-  /* ---------------- PATRÓN SECRETO ---------------- */
-  const ESTILOS = [
-    { nombre: 'Colores', tipo: 'ciclo', pool: ['🔴','🔵','🟡','🟢','🟣','🟠'] },
-    { nombre: 'Números', tipo: 'numeros', pool: [] },
-    { nombre: 'Figuras', tipo: 'ciclo', pool: ['▲','●','■','◆','★','⬟','♥'] },
-    { nombre: 'Direcciones', tipo: 'ciclo', pool: ['⬆️','➡️','⬇️','⬅️','↗️','↘️','↙️','↖️'] },
-    { nombre: 'Doble secuencia', tipo: 'doble', pool: [] }
-  ];
-  AJ.pantallaIntroPatron = function () {
-    AJ.detenerTimers(); AJ.finalizando = false;
-    const g = $aj('aj-pa-juego'); if (g) g.innerHTML = '';
-  };
-  AJ.abrirPatron = function () { ir('aj-patron'); };
-  AJ.iniciarPatron = function () {
-    AJ.detenerTimers(); AJ.actual = 'patron'; AJ.finalizando = false;
-    AJ.paNivel = 1; AJ.paCorazones = 3; AJ.paAciertosPartida = 0; AJ.paUsadas = new Set();
-    AJ.mostrarPatron();
-  };
-  AJ.crearPatron = function (nivel) {
-    const estiloIndex = Math.floor((nivel - 1) / 3) % ESTILOS.length;
-    const estilo = ESTILOS[estiloIndex];
-    const largo = Math.min(4 + Math.floor((nivel - 1) / 2), 12);
-    const periodo = Math.min(2 + Math.floor((nivel - 1) / 5), 5);
-    let secuencia = [], correcta, pool;
-    if (estilo.tipo === 'numeros') {
-      const inicio = 2 + Math.floor(Math.random() * 8);
-      const salto = 2 + Math.floor(Math.random() * Math.min(7, 2 + Math.floor(nivel / 3)));
-      if (nivel < 10) {
-        secuencia = Array.from({length:largo}, (_,i) => inicio + i * salto);
-        correcta = inicio + largo * salto;
-      } else {
-        const extra = 1 + Math.floor(Math.random() * 4);
-        secuencia = Array.from({length:largo}, (_,i) => inicio + i * salto + (i % 2 ? extra : 0));
-        correcta = inicio + largo * salto + (largo % 2 ? extra : 0);
-      }
-      pool = Array.from(new Set([correcta, correcta - salto, correcta + salto, correcta + salto * 2, correcta + 1, correcta - 1])).filter(n => n > 0);
-    } else if (estilo.tipo === 'doble') {
-      const a = 1 + Math.floor(Math.random() * 5), b = a + 5 + Math.floor(Math.random() * 4);
-      const paso = 1 + Math.floor(Math.random() * Math.min(4, 1 + Math.floor(nivel / 5)));
-      secuencia = Array.from({length:largo}, (_,i) => i % 2 ? b + Math.floor(i / 2) * paso : a + Math.floor(i / 2) * paso);
-      correcta = largo % 2 ? b + Math.floor(largo / 2) * paso : a + Math.floor(largo / 2) * paso;
-      pool = Array.from(new Set([correcta, correcta - paso, correcta + paso, correcta + paso * 2, correcta + 3, correcta - 2])).filter(n => n > 0);
-    } else {
-      const disponibles = mezclar(estilo.pool);
-      const ciclo = disponibles.slice(0, periodo);
-      secuencia = Array.from({length:largo}, (_,i) => ciclo[i % ciclo.length]);
-      correcta = ciclo[largo % ciclo.length];
-      pool = estilo.pool.slice();
-    }
-    const distractores = mezclar(pool.filter(x => x !== correcta));
-    const opciones = mezclar([correcta, ...distractores.slice(0, 3)]);
-    return { estilo: estilo.nombre, secuencia, correcta, opciones };
-  };
-  AJ.mostrarPatron = function () {
-    if (AJ.actual !== 'patron' || AJ.finalizando) return;
-    AJ.detenerTimers();
-    const st = estado();
-    st.paMax = Math.max(st.paMax, AJ.paNivel);
-    guardar(); AJ.comprobarLogros();
-    AJ.paPuzzle = AJ.crearPatron(AJ.paNivel);
-    AJ.paUsadas = new Set();
-    const p = AJ.paPuzzle;
-    const g = $aj('aj-pa-juego');
-    g.innerHTML = `
-      <div class="ajg-panel">
-        <div class="ajg-hearts">${'❤️'.repeat(AJ.paCorazones)}${'🖤'.repeat(3-AJ.paCorazones)}</div>
-        <div class="ajg-stats"><span class="ajg-chip">🏅 Nivel: ${AJ.paNivel}</span><span class="ajg-chip">✅ Aciertos: ${AJ.paAciertosPartida}</span></div>
-        <p class="ajg-pattern-head">Estilo de patrón: ${escapar(p.estilo)}</p>
-        <div class="ajg-sequence" aria-label="Secuencia a completar">${p.secuencia.map(x => '<span>' + escapar(x) + '</span>').join('<span>·</span>')}<span style="color:#c46d19">?</span></div>
-        <p class="ajg-question">¿Qué elemento sigue?</p>
-        <div class="ajg-options">${p.opciones.map((v,i) => `<button id="aj-pa-op-${i}" class="btn ajg-option" onclick="AJ.responderPatron(${i})">${escapar(v)}</button>`).join('')}</div>
-        <p id="aj-pa-feedback" class="ajg-feedback" aria-live="polite">Observá la regla y elegí la respuesta.</p>
-      </div>`;
-    iconos(g);
-  };
-  AJ.responderPatron = function (i) {
-    if (AJ.actual !== 'patron' || AJ.finalizando) return;
-    const boton = $aj('aj-pa-op-' + i);
-    if (!boton || boton.disabled || AJ.paUsadas.has(i)) return;
-    if (AJ.paPuzzle.opciones[i] === AJ.paPuzzle.correcta) {
-      AJ.paAciertosPartida++;
-      estado().paTotal++;
-      const fb = $aj('aj-pa-feedback'); if (fb) fb.textContent = '✅ ¡Correcto! El siguiente patrón será más complejo.';
-      AJ.paNivel++;
-      estado().paMax = Math.max(estado().paMax, AJ.paNivel);
-      guardar(); AJ.comprobarLogros(); sonar([523,659,784]);
-      AJ.timeout = setTimeout(() => AJ.mostrarPatron(), 750);
-    } else {
-      AJ.paUsadas.add(i); AJ.paCorazones = Math.max(0, AJ.paCorazones - 1);
-      boton.disabled = true;
-      const h = $aj('aj-pa-juego');
-      if (h) { const heart = h.querySelector('.ajg-hearts'); if (heart) heart.textContent = '❤️'.repeat(AJ.paCorazones) + '🖤'.repeat(3-AJ.paCorazones); }
-      const fb = $aj('aj-pa-feedback'); if (fb) fb.textContent = AJ.paCorazones ? 'Casi. Probá otra opción; perdiste un corazón.' : 'Se terminaron los corazones.';
-      sonar([220,180]);
-      if (AJ.paCorazones <= 0) {
-        AJ.finalizando = true; AJ.detenerTimers(); AJ.comprobarLogros();
-        AJ.timeout = setTimeout(() => celebrar('Partida terminada en el nivel ' + AJ.paNivel + '. Resolviste ' + AJ.paAciertosPartida + ' patrones.', () => ir('menu-mente'), 0, ['Nivel alcanzado', Math.max(1, AJ.paNivel-1), 1]), 600);
-      }
-    }
-  };
-
-  /* Al comenzar un juego, su tarjeta de progreso e historial usa el sistema nativo. */
-  const sigSiBase = sigSi;
-  sigSi = function () {
-    sigSiBase();
-    const nivelVisible = Array.isArray(sq) ? sq.length : 0;
-    if (nivelVisible > 0) {
-      const st = estado();
-      if (nivelVisible > st.simMax) {
-        st.simMax = nivelVisible;
-        guardar();
-      }
-      AJ.comprobarLogros();
-    }
-  };
-
-  estado();
-  if (typeof iconos === 'function') iconos(document.getElementById('menu-mente'));
-  if (typeof pintarInicio === 'function') pintarInicio();
+/* 🏆 Un logro por juego */
+const G=(k,n)=>s=>((s.gc||{})[k]||0)>=n,C=(k,n)=>s=>((s.cnt||{})[k]||0)>=n,V=(k,n)=>s=>((s.lv||{})[k]||0)>=n;
+[['tri','🌍','Cultura general','150 respuestas correctas en Preguntas y Respuestas',G('tri',150)],
+ ['ref','🗣️','Sabio del refranero','100 refranes completados bien',G('ref',100)],
+ ['cal','➕','Calculadora humana','100 cuentas correctas en Cálculo Mental',G('cal',100)],
+ ['sec','🔢','Detective de números','100 secuencias resueltas en ¿Qué Número Sigue?',G('sec',100)],
+ ['pal','🔤','Maestro de palabras','100 palabras ordenadas correctamente',G('pal',100)],
+ ['num','🔟','Memoria de elefante','60 aciertos en Memoria de Números',G('num',60)],
+ ['vis','👁️','Ojo de águila','60 aciertos en Memoria Visual',G('vis',60)],
+ ['fal','❓','Nada se me escapa','60 aciertos en ¿Cuál Falta?',G('fal',60)],
+ ['ori','🧭','Brújula humana','50 aciertos en Orientación',G('ori',50)],
+ ['int','🔎','Ojo clínico','80 aciertos en Palabra Intrusa',G('int',80)],
+ ['mem','🃏','Memoria de acero','Completá 25 partidas de Memoria de Cartas',C('mem',25)],
+ ['rc','🧩','Rey del rompecabezas','Completá 20 rompecabezas',C('rc',20)],
+ ['su','🔲','Maestro del Sudoku','Completá 20 sudokus',C('su',20)],
+ ['si','🎨','Simón dice','Completá 25 partidas de Simón',C('si',25)],
+ ['ints','👁️','Vista de lince','Llegá al nivel 15 en Intruso Cambiante',V('ints',15)],
+ ['pat','🔮','Mente lógica','Superá 10 rondas de Patrón Secreto',V('pat',10)]
+].forEach(l=>LG.push(['g-'+l[0],l[1],l[2],l[3],l[4]]));
 })();
 </script>
 </body>
