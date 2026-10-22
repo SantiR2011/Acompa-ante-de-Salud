@@ -734,7 +734,7 @@ const mk=(id,t,p,body)=>{const d=document.createElement('div');d.id=id;d.classNa
 const reg=(k,id,name,ic,cls,start)=>{const fn=()=>{marca(k);ir(id);start()};ACT[k]=[name,fn];
  const b=document.createElement('button');b.className='btn '+cls;b.textContent=ic+' '+name;b.onclick=fn;document.querySelector('#menu-mente .gm').appendChild(b);return fn};
 
-/* 1) 👁️ Intruso Cambiante: encontrá la casilla distinta; 3 vidas */
+/* 2) 👁️ Intruso Cambiante: encontrá la casilla distinta; 3 vidas */
 mk('ints','👁️ Intruso Cambiante','Tocá la casilla que tiene un color distinto. Tenés 3 vidas. Sin tiempo.','<div class="gx" id="ints-t"></div>');
 let il=1,iv=3;
 function iBuild(){const n=Math.min(6,2+(il/3|0)),h=rnd(0,359),d=Math.max(5,34-il*2),k=rnd(0,n*n-1),s=rnd(0,1)?d:-d,g=$('ints-t');
@@ -746,7 +746,7 @@ function iBuild(){const n=Math.min(6,2+(il/3|0)),h=rnd(0,359),d=Math.max(5,34-il
  $('ints-i').textContent='Nivel '+il+' · '+'❤️'.repeat(iv)}
 const iniInts=reg('ints','ints','Intruso Cambiante','👁️','na',()=>{il=1;iv=3;iBuild()});
 
-/* 2) 🔮 Patrón Secreto: descubrí qué sigue. Rondas de 5; con 4 o más aciertos subís de nivel */
+/* 4) 🔮 Patrón Secreto: descubrí qué sigue. Rondas de 5; con 4 o más aciertos subís de nivel */
 mk('pat','🔮 Patrón Secreto','Descubrí la regla y elegí qué sigue.','<p class="big2" id="pat-q"></p><div id="pat-o"></div>');
 function pGen(l){const t=rnd(0,Math.min(4,1+(l>>1))),Y=shuf(SY);let sq,ans,bad;
  if(t<2){const m=t+2,n=m*2+1;sq=Array.from({length:n},(_,i)=>Y[i%m]);ans=Y[n%m];bad=Y.filter(x=>x!=ans).slice(0,3)}
@@ -780,7 +780,7 @@ const G=(k,n)=>s=>((s.gc||{})[k]||0)>=n,C=(k,n)=>s=>((s.cnt||{})[k]||0)>=n,V=(k,
  ['mem','🃏','Memoria de acero','Completá 25 partidas de Memoria de Cartas',C('mem',25)],
  ['rc','🧩','Rey del rompecabezas','Completá 20 rompecabezas',C('rc',20)],
  ['su','🔲','Maestro del Sudoku','Completá 20 sudokus',C('su',20)],
- ['si','🎨','Simón dice','Completá 25 partidas de Simón',C('si',25)],
+ ['si','🎨','Memoria Fotográfica','Completá 25 partidas de Simón',C('si',25)],
  ['ints','👁️','Vista de lince','Llegá al nivel 15 en Intruso Cambiante',V('ints',15)],
  ['pat','🔮','Mente lógica','Superá 10 rondas de Patrón Secreto',V('pat',10)]
 ].forEach(l=>LG.push(['g-'+l[0],l[1],l[2],l[3],l[4]]));
